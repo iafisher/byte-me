@@ -20,7 +20,7 @@
 </nav>
 <div class="container-fluid" style="padding-top:20px" >
   <div class="row">
-    <div class="col">
+    <div class="col text-center">
       <form>
         <div class="form-group">
           <label for="exampleTextarea">Python Code</label>
@@ -28,6 +28,7 @@
           </textarea>
         </div>
       </form>
+      <button name="convert" value="submit" type="submit" class="btn btn-primary" formmethod="post" formaction="/" formenctype="text/plain" >Compile</button>
     </div>
     <div class="col">
       <form id = "readonly">
@@ -39,6 +40,6 @@
       </form>
     </div>
   </div>
-  <button name="convert" value="submit" type="submit" class="btn btn-primary">Compile</button>
+ 
 </div>
 {% endblock %}
