@@ -31,7 +31,7 @@
   </nav>
   
   <body>
-    <div class="container" style="padding-top:20px" >
+    <div class="container-fluid" style="padding-top:20px" >
       <div class="row">
 	<div class="col">
 	  <form>
@@ -42,17 +42,18 @@
 	    </div>
 	  </form>
 	</div>
-	<div class="col offset-md-1">
+	<div class="col">
 	  <form id = "readonly">
 	    <div class="form-group">
               <label for="exampleTextarea">Byte Code</label>
               <textarea readonly class="form-control" rows="20">
 	      </textarea>
-	     </div>
+	    </div>
 	  </form>
-	  </div>
 	</div>
       </div>
+      <button name="convert" value="submit" type="submit" class="btn btn-primary">Submit</button>
+    </div>
 
     <!-- Bootstrap core JavaScript
 	 ================================================== -->
