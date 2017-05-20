@@ -25,11 +25,14 @@
 </nav>
 <div class="container-fluid" style="padding-top:20px" >
   <div class="row">
-    <div class="col text-center">
+    <div class="col">
       <form id="sourceCodeForm" method="POST" action="/" role="form">
         <div class="form-group">
           <label for="source_code_textarea">Python Code</label>
-          <textarea class="form-control" id="source_code_textarea" name="source_code" rows="20">{{ source_code }}</textarea>
+          <textarea class="form-control" id="source_code_textarea" name="source_code" rows="20">
+	   
+	    {{ source_code }}
+	  </textarea>
         </div>
         <button type="submit" class="btn btn-primary">Compile</button>
       </form>
@@ -45,3 +48,16 @@
   </div>
 </div>
 {% endblock %}
+
+{% block extra_scripts %}
+  <script src="{{ url_for('static', filename='CodeMirror/lib/codemirror.js') }}"></script>
+  <script src="{{ url_for('static', filename='CodeMirror/mode/python/python.js') }}"></script>
+  <script>
+    var my_textarea = document.getElementById("source_code_textarea");
+     var editor = CodeMirror.fromTextArea(my_textarea, {lineNumbers: true, mode:"python"});
+   </script>
+  
+{% endblock %}
+
+
+
