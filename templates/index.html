@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Byte Me{% endblock %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
 <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,23 +26,22 @@
 <div class="container-fluid" style="padding-top:20px" >
   <div class="row">
     <div class="col text-center">
-      <form method="POST" action="/" enctype="text/plain" role="form" >
+      <form id="sourceCodeForm" method="POST" action="/" role="form">
         <div class="form-group">
-          <label for="exampleTextarea">Python Code</label>
-          <textarea class="form-control" id="exampleTextarea" name="source_code" rows="20"></textarea>
+          <label for="source_code_textarea">Python Code</label>
+          <textarea class="form-control" id="source_code_textarea" name="source_code" rows="20">{{ source_code }}</textarea>
         </div>
-	<button name="convert" value="Submit" type="submit" class="btn btn-primary">Compile</button>
-	<form>
+        <button type="submit" class="btn btn-primary">Compile</button>
+      </form>
     </div>
-    <div class="col">
+    <div class="col text-center">
       <form id = "readonly">
         <div class="form-group">
-          <label for="exampleTextarea">Byte Code</label>
-          <textarea readonly class="form-control" rows="20">{{ bytecode }}</textarea>
+          <label for="bytecode_textarea">Byte Code</label>
+          <textarea readonly class="form-control" id="bytecode_textarea" rows="20">{{ bytecode }}</textarea>
         </div>
       </form>
     </div>
   </div>
- 
 </div>
 {% endblock %}

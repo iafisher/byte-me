@@ -1,3 +1,5 @@
+import dis
+
 from flask import Flask, render_template, request
 app = Flask(__name__)
 
@@ -7,5 +9,7 @@ def index():
 
 @app.route('/', methods=['POST'])
 def index_as_post():
-    #print(request.form['source_code']) # doesn't work
-    return render_template('index.html', name='index')
+    source_code = request.form['source_code']
+    bytecode = dis.Bytecode(source_code)
+    return render_template('index.html', name='index', source_code=source_code, 
+                                                       bytecode=bytecode.dis())
