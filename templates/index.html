@@ -54,7 +54,7 @@
   <script src="{{ url_for('static', filename='CodeMirror/mode/python/python.js') }}"></script>
   <script>
     var my_textarea = document.getElementById("source_code_textarea");
-     var editor = CodeMirror.fromTextArea(my_textarea, {lineNumbers: true, mode:"python"});
+     var editor = CodeMirror.fromTextArea(my_textarea, {lineNumbers: true, mode:"python", smartIndent: true});
    </script>
   
 {% endblock %}
