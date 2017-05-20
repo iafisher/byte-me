@@ -21,14 +21,14 @@
 <div class="container-fluid" style="padding-top:20px" >
   <div class="row">
     <div class="col text-center">
-      <form>
+      <form method="POST" action="/" enctype="text/plain" role="form" >
         <div class="form-group">
           <label for="exampleTextarea">Python Code</label>
           <textarea class="form-control" id="exampleTextarea" rows="20">
           </textarea>
         </div>
-      </form>
-      <button name="convert" value="submit" type="submit" class="btn btn-primary" formmethod="post" formaction="/" formenctype="text/plain" >Compile</button>
+	<button name="convert" value="Submit" type="submit" class="btn btn-primary">Compile</button>
+	<form>
     </div>
     <div class="col">
       <form id = "readonly">
