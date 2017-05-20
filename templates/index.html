@@ -24,8 +24,7 @@
       <form method="POST" action="/" enctype="text/plain" role="form" >
         <div class="form-group">
           <label for="exampleTextarea">Python Code</label>
-          <textarea class="form-control" id="exampleTextarea" rows="20">
-          </textarea>
+          <textarea class="form-control" id="exampleTextarea" name="source_code" rows="20"></textarea>
         </div>
 	<button name="convert" value="Submit" type="submit" class="btn btn-primary">Compile</button>
 	<form>
@@ -34,8 +33,7 @@
       <form id = "readonly">
         <div class="form-group">
           <label for="exampleTextarea">Byte Code</label>
-          <textarea readonly class="form-control" rows="20">
-          </textarea>
+          <textarea readonly class="form-control" rows="20">{{ bytecode }}</textarea>
         </div>
       </form>
     </div>

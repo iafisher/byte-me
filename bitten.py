@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 app = Flask(__name__)
 
 @app.route('/')
@@ -7,4 +7,5 @@ def index():
 
 @app.route('/', methods=['POST'])
 def index_as_post():
-    return 'hello world'
+    #print(request.form['source_code']) # doesn't work
+    return render_template('index.html', name='index')
