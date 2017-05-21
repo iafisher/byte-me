@@ -33,6 +33,9 @@
         </div>
         <button type="submit" class="btn btn-primary">Compile</button>
       </form>
+      {% if error_msg %}
+      <div>{{ error_msg }}</div>
+      {% endif %}
     </div>
     <div class="col text-center">
       <form id = "readonly">
