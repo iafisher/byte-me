@@ -24,23 +24,23 @@
   </div>
 </nav>
 <div class="container-fluid" style="padding-top:20px" >
-  <div class="row">
-    <div class="col">
+  <div class="row" id="textrow">
+    <div id="sourceCodeDiv" class="col-md-12">
       <form id="sourceCodeForm" method="POST" action="/" role="form">
         <div class="form-group">
           <label for="source_code_textarea">Python Code</label>
           <textarea class="form-control" id="source_code_textarea" name="source_code" rows="20">{{ source_code }}</textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Compile</button>
+        <button type="submit" class="btn btn-primary" id="compile">Compile</button>
       </form>
       {% if error_msg %}
       <div>{{ error_msg }}</div>
       {% endif %}
     </div>
-    <div class="col text-center">
+    <div class="col-md-7">
       <form id = "readonly">
         <div class="form-group">
-          <label for="bytecode_textarea">Byte Code</label>
+          <label for="bytecode_textarea">Bytecode</label>
           <textarea readonly class="form-control" id="bytecode_textarea" rows="20">{{ bytecode }}</textarea>
         </div>
       </form>
@@ -55,5 +55,12 @@
   <script>
     var my_textarea = document.getElementById("source_code_textarea");
     var editor = CodeMirror.fromTextArea(my_textarea, {lineNumbers: true, mode:"python", smartIndent: true});
+  </script>
+  <script>
+    // instead of being called on click this should be called on page load if the bytecode form area is not empty.
+     $('compile').on('click', function(){
+     $('sourceCodeDiv').removeClass();
+     $('sourceCodeDiv').addClass('col-md-5');
+     })
   </script>
 {% endblock %}
