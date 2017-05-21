@@ -38,12 +38,11 @@
       {% endif %}
     </div>
     <div class="col-md-7">
-      <form id = "readonly">
-        <div class="form-group">
-          <label for="bytecode_textarea">Bytecode</label>
-          <textarea readonly class="form-control" id="bytecode_textarea" rows="20">{{ bytecode }}</textarea>
-        </div>
-      </form>
+      <div>
+        {% for bytecode in bytecode_list %}
+        <pre class="{{ bytecode.code }}">{{ bytecode.string }}</pre>
+        {% endfor %}
+      </div>
     </div>
   </div>
 </div>
