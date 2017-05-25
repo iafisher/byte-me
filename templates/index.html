@@ -25,7 +25,7 @@
 </nav>
 <div class="container-fluid" style="padding-top:20px" >
   <div class="row" id="textrow">
-    <div id="sourceCodeDiv" class="col-md-12">
+    <div id="sourceCodeDiv" class="col-md-5">
       <form id="sourceCodeForm" method="POST" action="/" role="form">
         <div class="form-group">
           <label for="source_code_textarea">Python Code</label>
@@ -40,7 +40,7 @@
     <div class="col-md-7">
       <div>
         {% for bytecode in bytecode_list %}
-        <pre class="{{ bytecode.code }}">{{ bytecode.string }}</pre>
+        <pre class="{{ bytecode.code }}" data-toggle="tooltip" title="Push the value that name refers to onto the stack">{{ bytecode.string }}</pre>
         {% endfor %}
       </div>
     </div>
