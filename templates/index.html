@@ -40,7 +40,7 @@
     <div class="col-md-7">
       <div>
         {% for bytecode in bytecode_list %}
-        <pre class="{{ bytecode.code }}" data-toggle="tooltip" title="Push the value that name refers to onto the stack">{{ bytecode.string }}</pre>
+        <pre class="{{ bytecode.code }}" data-toggle="tooltip">{{ bytecode.string }}</pre>
         {% endfor %}
       </div>
     </div>
@@ -56,10 +56,26 @@
     var editor = CodeMirror.fromTextArea(my_textarea, {lineNumbers: true, mode:"python", smartIndent: true});
   </script>
   <script>
-    // instead of being called on click this should be called on page load if the bytecode form area is not empty.
-     $('compile').on('click', function(){
-     $('sourceCodeDiv').removeClass();
-     $('sourceCodeDiv').addClass('col-md-5');
-     })
+    function register_tooltip(classname, text) {
+        $('.' + classname).attr('title', text);
+    }
+    //General Instructions
+    register_tooltip('NOP', '');
+    register_tooltip('POP_TOP', '');
+    register_tooltip('ROT_TWO', '');
+    register_tooltip('ROT_THREE', '');
+    register_tooltip('DUP_TOP', '');
+    register_tooltip('DUP_TOP_TWO, '');
+    //Unary operations
+    register_tooltip('UNARY_POSITIVE', '');
+    register_tooltip('UNARY_NEGATIVE', '');
+    register_tooltip('UNARY_NOT', '');
+    register_tooltip('UNARY_INVERT', '');
+    register_tooltip('GET_ITER', '');
+    //Binary operations
+    register_tooltip('', '');
+
+    
+    register_tooltip('LOAD_NAME', 'Push the value that name refers to onto the stack');
   </script>
 {% endblock %}
