@@ -16,7 +16,7 @@ def index_as_post():
         source_code = request.form['source_code']
         bytecode = dis.Bytecode(source_code)
         bytecode_list = []
-        for inst, line in zip(bytecode, bytecode.dis().splitlines()):
+        for inst, line in zip(bytecode, filter(len, bytecode.dis().splitlines())):
             bytecode_list.append(BytecodeElement(line, inst.opname))
         return render_template('index.html', name='index', source_code=source_code, 
                                                            bytecode_list=bytecode_list)
