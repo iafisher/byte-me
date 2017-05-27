@@ -6,29 +6,15 @@
 {% endblock %}
 
 {% block body %}
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <a class="navbar-brand" href="#">Byte Me</a>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+<div class="container-fluid" style="padding-top: 20px;">
+      <h1 class="text-center">Byte Me</h1>
+      <h5 class="text-center">Compile Python source code to bytecode</h5>
+</div>
 <div class="container-fluid" style="padding-top:20px" >
-  <div class="row" id="textrow">
+  <div class="row justify-content-center" id="textRow">
     <div id="sourceCodeDiv" class="col-md-5">
       <form id="sourceCodeForm" method="POST" action="/" role="form">
         <div class="form-group">
-          <label for="source_code_textarea">Python Code</label>
           <textarea class="form-control" id="source_code_textarea" name="source_code" rows="20">{{ source_code }}</textarea>
         </div>
         <button type="submit" class="btn btn-primary" id="compile">Compile</button>
@@ -37,13 +23,19 @@
       <div>{{ error_msg }}</div>
       {% endif %}
     </div>
-    <div class="col-md-7">
-      <div>
+  </div>
+  <div class="row" id="resultRow">
+    <div id="pythonSubmitted" class="col-md-5">
+     {{ source_code }}
+    </div>
+    <div id="bytecoderesult" class="cold-md-7">
+       <div>
         {% for bytecode in bytecode_list %}
         <pre class="{{ bytecode.code }}" data-toggle="tooltip">{{ bytecode.string }}</pre>
         {% endfor %}
       </div>
     </div>
+    
   </div>
 </div>
 {% endblock %}
@@ -56,4 +48,7 @@
     var editor = CodeMirror.fromTextArea(my_textarea, {lineNumbers: true, mode:"python", smartIndent: true});
   </script>
   <script src="{{ url_for('static', filename='tooltip.js') }}"></script>
+  <script>
+   
+  </script>
 {% endblock %}
