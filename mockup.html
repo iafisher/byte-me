@@ -37,29 +37,34 @@
       <h5 class="text-center">Compile Python source code to bytecode</h5>
       <div class="row" style="padding-top: 30px;">
         <div class="col-md-6" style="float: none; margin: 0 auto;">
-          <form id="sourceCodeForm" method="POST" action="/" role="form">
-            <div class="form-group">
-              <textarea class="form-control" id="source_code_textarea" name="source_code">x = 5
+          <textarea class="form-control" id="source_code_textarea" name="source_code">x = 5
 y = 8
 z = x + y</textarea>
-            </div>
-            <div class="text-center">
-              <button type="submit" class="btn btn-primary" id="compile">Compile</button>
-            </div>
-          </form>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary" id="compile">Compile</button>
+          </div>
         </div>
       </div>
-      <!--
-      <div class="row">
-        <div class="col-md-5" style="padding-left: 30px">
+      <div class="row" id="bytecodeRow" style="padding-top: 30px; display: none;">
+        <div class="col-md-2"></div>
+        <div class="col-md-4">
           <textarea id="submittedTextArea">x = 5
 y = 8
 z = x + y</textarea>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-4">
+          <pre class="LOAD_CONST" data-toggle="tooltip">  1           0 LOAD_CONST               0 (5)</pre>
+          <pre class="STORE_NAME" data-toggle="tooltip">              3 STORE_NAME               0 (x)</pre>
+          <pre class="LOAD_CONST" data-toggle="tooltip">  2           6 LOAD_CONST               1 (8)</pre>
+          <pre class="STORE_NAME" data-toggle="tooltip">              9 STORE_NAME               1 (y)</pre>
+          <pre class="LOAD_NAME" data-toggle="tooltip">  3          12 LOAD_NAME                0 (x)</pre>
+          <pre class="LOAD_NAME" data-toggle="tooltip">             15 LOAD_NAME                1 (y)</pre>
+          <pre class="BINARY_ADD" data-toggle="tooltip">             18 BINARY_ADD</pre>
+          <pre class="STORE_NAME" data-toggle="tooltip">             19 STORE_NAME               2 (z)</pre>
+          <pre class="LOAD_CONST" data-toggle="tooltip">             22 LOAD_CONST               2 (None)</pre>
+          <pre class="RETURN_VALUE" data-toggle="tooltip">             25 RETURN_VALUE</pre>
         </div>
       </div>
-      -->
     </div>
     <!--
     <div class="container-fluid" style="padding-top:20px" >
@@ -114,11 +119,6 @@ z = x + y</textarea>
   <script src="static/bootstrap/js/bootstrap.min.js"></script>
   <script src="static/CodeMirror/lib/codemirror.js"></script>
   <script src="static/CodeMirror/mode/python/python.js"></script>
-  <script>
-    var my_textarea = document.getElementById("source_code_textarea");
-    var editor = CodeMirror.fromTextArea(my_textarea, {lineNumbers: true, mode:"python", smartIndent: true});
-    var my_textarea2 = document.getElementById("submittedTextArea");
-    var editor2 = CodeMirror.fromTextArea(my_textarea2, {mode:"python", readOnly:true});
-  </script>
+  <script src="mockup.js"></script>
   <script src="static/tooltip.js"></script>
 </html>
