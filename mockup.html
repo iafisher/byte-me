@@ -9,49 +9,31 @@
     <!-- Bootstrap core CSS -->
     <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="static/CodeMirror/lib/codemirror.css" rel="stylesheet">
-    <link href="static/style.css" rel="stylesheet">
+    <link href="mockup.css" rel="stylesheet">
   </head>
   <body>
-    <!--
-    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <a class="navbar-brand" href="#">Byte Me</a>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    -->
-    <div class="container-fluid" style="padding-top: 20px; background: gray">
+    <div class="container-fluid" id="mainContainer">
       <h1 class="text-center">Byte Me</h1>
       <h5 class="text-center">Compile Python source code to bytecode</h5>
-      <div class="row" style="padding-top: 30px; background: gray">
-        <div class="col-md-6" style="float: none; margin: 0 auto;">
+      <div class="row" id="firstRow">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
           <textarea class="form-control" id="source_code_textarea" name="source_code">x = 5
 y = 8
 z = x + y</textarea>
           <div class="text-center">
-            <button type="submit" class="btn btn-primary" id="compile">Compile</button>
+            <button type="submit" class="btn btn-primary margintop20" id="compile">Compile</button>
           </div>
         </div>
       </div>
-      <div class="row" id="bytecodeRow" style="padding-top: 30px; display: none; padding-bottom: 30px; background: black">
+      <div class="row" id="bytecodeRow" style="display: none;">
         <div class="col-md-2"></div>
         <div class="col-md-4">
           <textarea id="submittedTextArea">x = 5
 y = 8
 z = x + y</textarea>
         </div>
-        <div class="col-md-4" style="background:white; padding-top: 10px">
+        <div class="col-md-4" id="bytecodeColumn">
           <pre class="LOAD_CONST" data-toggle="tooltip">  1           0 LOAD_CONST               0 (5)</pre>
           <pre class="STORE_NAME" data-toggle="tooltip">              3 STORE_NAME               0 (x)</pre>
           <pre class="LOAD_CONST" data-toggle="tooltip">  2           6 LOAD_CONST               1 (8)</pre>
@@ -65,49 +47,6 @@ z = x + y</textarea>
         </div>
       </div>
     </div>
-    <!--
-    <div class="container-fluid" style="padding-top:20px" >
-      <div class="row" id="textrow">
-        <div id="sourceCodeDiv" class="col-md-5">
-          <form id="sourceCodeForm" method="POST" action="/" role="form">
-            <div class="form-group">
-              <label for="source_code_textarea">Python Code</label>
-              <textarea class="form-control" id="source_code_textarea" name="source_code" rows="20">x = 5
-y = 8
-z = x + y</textarea>
-            </div>
-            <button type="submit" class="btn btn-primary" id="compile">Compile</button>
-          </form>
-          
-        </div>
-        <div class="col-md-7">
-          <div>
-            
-            <pre class="LOAD_CONST" data-toggle="tooltip">  1           0 LOAD_CONST               0 (5)</pre>
-            
-            <pre class="STORE_NAME" data-toggle="tooltip">              3 STORE_NAME               0 (x)</pre>
-            
-            <pre class="LOAD_CONST" data-toggle="tooltip">  2           6 LOAD_CONST               1 (8)</pre>
-            
-            <pre class="STORE_NAME" data-toggle="tooltip">              9 STORE_NAME               1 (y)</pre>
-            
-            <pre class="LOAD_NAME" data-toggle="tooltip">  3          12 LOAD_NAME                0 (x)</pre>
-            
-            <pre class="LOAD_NAME" data-toggle="tooltip">             15 LOAD_NAME                1 (y)</pre>
-            
-            <pre class="BINARY_ADD" data-toggle="tooltip">             18 BINARY_ADD</pre>
-            
-            <pre class="STORE_NAME" data-toggle="tooltip">             19 STORE_NAME               2 (z)</pre>
-            
-            <pre class="LOAD_CONST" data-toggle="tooltip">             22 LOAD_CONST               2 (None)</pre>
-            
-            <pre class="RETURN_VALUE" data-toggle="tooltip">             25 RETURN_VALUE</pre>
-            
-          </div>
-        </div>
-      </div>
-    </div>
-    -->
   </body>
   <!-- Bootstrap core JavaScript
        ================================================== -->
