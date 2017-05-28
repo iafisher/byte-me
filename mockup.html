@@ -10,7 +10,6 @@
     <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="static/CodeMirror/lib/codemirror.css" rel="stylesheet">
     <link href="static/style.css" rel="stylesheet">
-    <link href="static/style.css" rel="stylesheet">
   </head>
   <body>
     <!--
@@ -32,10 +31,10 @@
       </div>
     </nav>
     -->
-    <div class="container-fluid" style="padding-top: 20px;">
+    <div class="container-fluid" style="padding-top: 20px; background: gray">
       <h1 class="text-center">Byte Me</h1>
       <h5 class="text-center">Compile Python source code to bytecode</h5>
-      <div class="row" style="padding-top: 30px;">
+      <div class="row" style="padding-top: 30px; background: gray">
         <div class="col-md-6" style="float: none; margin: 0 auto;">
           <textarea class="form-control" id="source_code_textarea" name="source_code">x = 5
 y = 8
@@ -45,14 +44,14 @@ z = x + y</textarea>
           </div>
         </div>
       </div>
-      <div class="row" id="bytecodeRow" style="padding-top: 30px; display: none;">
+      <div class="row" id="bytecodeRow" style="padding-top: 30px; display: none; padding-bottom: 30px; background: black">
         <div class="col-md-2"></div>
         <div class="col-md-4">
           <textarea id="submittedTextArea">x = 5
 y = 8
 z = x + y</textarea>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" style="background:white; padding-top: 10px">
           <pre class="LOAD_CONST" data-toggle="tooltip">  1           0 LOAD_CONST               0 (5)</pre>
           <pre class="STORE_NAME" data-toggle="tooltip">              3 STORE_NAME               0 (x)</pre>
           <pre class="LOAD_CONST" data-toggle="tooltip">  2           6 LOAD_CONST               1 (8)</pre>
