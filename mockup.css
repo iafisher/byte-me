@@ -14,16 +14,21 @@
   padding-top: 30px;
 }
 
-#bytecodeRow {
-  padding-top: 30px;
-  padding-bottom: 30px;
+.bytecode-row {
+  padding-top: 10px;
+}
+
+.code-pair {
+  border: 1px solid gray;
+  padding: 5px;
+  margin: 2.5px;
 }
 
 #compile {
   margin-top: 20px;
 }
 
-#bytecodeColumn {
-  padding-top: 10px;
-  border: 1px solid lightgray;
+/* Override the CodeMirror CSS for our bytecode */
+.bytecode-row pre {
+  margin-bottom: 0px;
 }
