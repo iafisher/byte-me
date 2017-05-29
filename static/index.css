@@ -1,0 +1,34 @@
+.CodeMirror {
+  border: 1px solid lightgray;
+}
+
+#firstRow .CodeMirror {
+  height: 170px;
+}
+
+#mainContainer {
+  padding-top: 20px;
+}
+
+#firstRow {
+  padding-top: 30px;
+}
+
+.bytecode-row {
+  padding-top: 10px;
+}
+
+.code-pair {
+  border: 1px solid gray;
+  padding: 5px;
+  margin: 2.5px;
+}
+
+#compile {
+  margin-top: 20px;
+}
+
+/* Override the CodeMirror CSS for our bytecode */
+.bytecode-row pre {
+  margin-bottom: 0px;
+}

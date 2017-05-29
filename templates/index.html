@@ -2,40 +2,23 @@
 {% block title %}Byte Me{% endblock %}
 
 {% block extra_head %}
-<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='index.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid" style="padding-top: 20px;">
-      <h1 class="text-center">Byte Me</h1>
-      <h5 class="text-center">Compile Python source code to bytecode</h5>
-</div>
-<div class="container-fluid" style="padding-top:20px" >
-  <div class="row justify-content-center" id="textRow">
-    <div id="sourceCodeDiv" class="col-md-5">
-      <form id="sourceCodeForm" method="POST" action="/" role="form">
-        <div class="form-group">
-          <textarea class="form-control" id="source_code_textarea" name="source_code" rows="20">{{ source_code }}</textarea>
-        </div>
-        <button type="submit" class="btn btn-primary" id="compile">Compile</button>
-      </form>
-      {% if error_msg %}
-      <div>{{ error_msg }}</div>
-      {% endif %}
-    </div>
-  </div>
-  <div class="row" id="resultRow">
-    <div id="pythonSubmitted" class="col-md-5 border">
-     {{ source_code }}
-    </div>
-    <div id="bytecoderesult" class="cold-md-7">
-       <div>
-        {% for bytecode in bytecode_list %}
-        <pre class="{{ bytecode.code }}" data-toggle="tooltip">{{ bytecode.string }}</pre>
-        {% endfor %}
+<div class="container-fluid" id="mainContainer">
+  <h1 class="text-center">Byte Me</h1>
+  <h5 class="text-center">Compile Python source code to bytecode</h5>
+  <div class="row" id="firstRow">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <textarea class="form-control" id="sourceCodeTextarea" name="source_code">x = 5
+y = 8
+z = x + y</textarea>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary margintop20" id="compile">Compile</button>
       </div>
     </div>
-    
   </div>
 </div>
 {% endblock %}
@@ -43,12 +26,6 @@
 {% block extra_scripts %}
   <script src="{{ url_for('static', filename='CodeMirror/lib/codemirror.js') }}"></script>
   <script src="{{ url_for('static', filename='CodeMirror/mode/python/python.js') }}"></script>
-  <script>
-    var my_textarea = document.getElementById("source_code_textarea");
-    var editor = CodeMirror.fromTextArea(my_textarea, {lineNumbers: true, mode:"python", smartIndent: true});
-  </script>
   <script src="{{ url_for('static', filename='tooltip.js') }}"></script>
-  <script>
-   
-  </script>
+  <script src="{{ url_for('static', filename='index.js') }}"></script>
 {% endblock %}
