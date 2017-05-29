@@ -12,7 +12,7 @@ $("#compile").click(function() {
 });
 
 function addBytecode(data) {
-    console.log(data);
+    // console.log(data);
     if (typeof data !== "string") {
         if (data.length > 0) {
             // clear the error box
@@ -38,7 +38,7 @@ function createBytecodeRow(codeObj) {
     sourceColumn.setAttribute("class", "col-md-3 code-pair");
     sourceColumn.appendChild(document.createTextNode(codeObj.source));
     var byteColumn = document.createElement("div");
-    byteColumn.setAttribute("class", "col-md-3 code-pair");
+    byteColumn.setAttribute("class", "col-md-4 code-pair");
     for (var i = 0; i < codeObj.bytecode.length; i++) {
         var preElement = document.createElement("pre");
         preElement.appendChild(document.createTextNode(codeObj.bytecode[i]));
