@@ -10,16 +10,25 @@ def index():
 
 @app.route('/bytecode', methods=['POST'])
 def bytecode_post():
-    ret = []
+    """Handle POST requests of source code by returning the compiled bytecode as JSON. A sample
+       return value is 
+
+           [
+             {'source':'x = 5', bytecode:['LOAD_CONST 0 (5)', 'STORE_NAME 0 (x)']}
+           ]
+    """
     try:
         source_code = request.form['sourceCode']
         bytecode = dis.Bytecode(source_code)
-    except SyntaxError:
-        pass
+    except SyntaxError as e:
+        return json.dumps('Syntax error on line {}'.format(e.lineno))
     else:
+        ret = []
+        # match each source code line with its bytecode instructions, and package them as a single
+        # JSON object
         for line, inst_group in zip(source_code.splitlines(), group_bytecode(bytecode)):
             ret.append({'source':line, 'bytecode':list(map(inst_to_str, inst_group))})
-    return json.dumps(ret)
+        return json.dumps(ret)
 
 def inst_to_str(inst):
     """Convert a bytecode instruction to a string."""

@@ -12,11 +12,19 @@ $("#compile").click(function() {
 });
 
 function addBytecode(data) {
-    if (data.length > 0) {
-        $(".bytecode-row").detach();
-        for (var i = 0; i < data.length; i++) {
-            $("#mainContainer").append(createBytecodeRow(data[i]));
+    console.log(data);
+    if (typeof data !== "string") {
+        if (data.length > 0) {
+            // clear the error box
+            $("#syntaxError").text("");
+            // remove all previous bytecode elements
+            $(".bytecode-row").detach();
+            for (var i = 0; i < data.length; i++) {
+                $("#mainContainer").append(createBytecodeRow(data[i]));
+            }
         }
+    } else {
+        $("#syntaxError").text(data);
     }
 }
 
