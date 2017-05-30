@@ -23,6 +23,11 @@
   padding: 5px;
   margin: 2.5px;
 }
+.table {
+    font-family: monospace;
+    font-size: 12px;
+}
+
 
 #compile {
   margin-top: 20px;

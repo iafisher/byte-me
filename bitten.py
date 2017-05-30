@@ -27,16 +27,15 @@ def bytecode_post():
         # match each source code line with its bytecode instructions, and package them as a single
         # JSON object
         for line, inst_group in zip(source_code.splitlines(), group_bytecode(bytecode)):
-            ret.append({'source':line, 'bytecode':list(map(inst_to_str, inst_group))})
+            ret.append({'source':line, 'bytecode':list(map(inst_to_str, inst_group)) })
         return json.dumps(ret)
 
 def inst_to_str(inst):
     """Convert a bytecode instruction to a string."""
     if inst.arg is not None:
-        padding = ' ' * (25 - len(inst.opname))
-        return '{0.opname}{1}{0.arg} ({0.argrepr})'.format(inst, padding)
+        return {'opname': inst.opname,'arg': str(inst.arg), 'argrepr': inst.argrepr}
     else:
-        return inst.opname
+        return {'opname': inst.opname, 'arg': "", 'argrepr': ""}
 
 def group_bytecode(bytecode):
     """Yield tuples of bytecode instructions, with each tuple matching a single line of source
@@ -51,3 +50,5 @@ def group_bytecode(bytecode):
         collect.append(inst)
     if collect:
         yield tuple(collect)
+
+    
