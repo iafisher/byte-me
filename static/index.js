@@ -7,12 +7,14 @@ $("#compile").click(function() {
         data: {sourceCode: editor.getValue()},
         dataType: "json", 
         method: "POST",
-        success: addBytecode,
+        success: function(data){
+	    addBytecode(data);
+	    register_tooltips();    
+	}
     });
 });
 
 function addBytecode(data) {
-    console.log(data);
     if (typeof data !== "string") {
         if (data.length > 0) {
             // clear the error box
@@ -30,7 +32,7 @@ function addBytecode(data) {
 	    col.appendChild(table);
 	    row.appendChild(col);
 	    $("#mainContainer").append(row);
-	    document.getElementById("bytecode-table").innerHTML='<thead><tr><th>Bytecode</th><th>opname</th><th>arg</th><th>argrepr</th></tr></thead>';
+	    document.getElementById("bytecode-table").innerHTML='<thead><tr><th>Bytecode</th><th>Opname</th><th>Argument Index</th><th>Argument</th></tr></thead>';
 	    var body = document.createElement("tbody");
 	    body.id = "tableBody";
 	    table.append(body);
@@ -54,6 +56,7 @@ function createBytecodeRow(codeObj) {
     source.setAttribute("scope", "row");
     source.innerHTML = codeObj.source;
     opname.innerHTML = codeObj.bytecode[0].opname;
+    opname.setAttribute("class", codeObj.bytecode[0].opname);
     arg.innerHTML = codeObj.bytecode[0].arg;
     argrepr.innerHTML = codeObj.bytecode[0].arg;
     tablerow.append(source);
@@ -66,44 +69,17 @@ function createBytecodeRow(codeObj) {
 	var extraOpname = document.createElement("td");
 	var extraArg = document.createElement("td");
 	var extraArgrepr = document.createElement("td");
-	if(typeof codeObj.bytecode[i]=='object'){
-	    extraOpname.innerHTML = codeObj.bytecode[i].opname;
-	    extraArg.innerHTML = codeObj.bytecode[i].arg;
-	    extraArgrepr.innerHTML = codeObj.bytecode[i].arg;
-	    extraTablerow.append(document.createElement("td"));
-	    extraTablerow.append(extraOpname);
-	    extraTablerow.append(extraArg);
-	    extraTablerow.append(extraArgrepr);
-	    $("#tableBody").append(extraTablerow);
-	}
-	else{
-	    extraOpname.innerHTML = codeObj.bytecode[i];
-	    extraArg.innerHTML = codeObj.bytecode[i].arg;
-	    extraArgrepr.innerHTML = codeObj.bytecode[i].arg;
-	    extraTablerow.append(document.createElement("td"));
-	    extraTablerow.append(extraOpname);
-	    extraTablerow.append(document.createElement("td"));
-	    extraTablerow.append(document.createElement("td"));
-	}
+	extraOpname.setAttribute("class", codeObj.bytecode[i].opname);
+	extraOpname.innerHTML = codeObj.bytecode[i].opname;
+	extraArg.innerHTML = codeObj.bytecode[i].arg;
+	extraArgrepr.innerHTML = codeObj.bytecode[i].arg;
+	extraTablerow.append(document.createElement("td"));
+	extraTablerow.append(extraOpname);
+	extraTablerow.append(extraArg);
+	extraTablerow.append(extraArgrepr);
+	$("#tableBody").append(extraTablerow);
+
 	$("#tableBody").append(extraTablerow);
     }
     return tablerow;
-
-
-
-
-
-    
-   // sourceColumn.appendChild(document.createTextNode(codeObj.source));
-   // var byteColumn = document.createElement("div");
-   // byteColumn.setAttribute("class", "col-md-3 code-pair");
-   // for (var i = 0; i < codeObj.bytecode.length; i++) {
-   //     var preElement = document.createElement("pre");
-   //     preElement.appendChild(document.createTextNode(codeObj.bytecode;
-   //     byteColumn.appendChild(preElement);
-   // }
-   // row.appendChild(table);
-   // row.appendChild(sourceColumn);
-   // row.appendChild(byteColumn);
-   // return row;
 }

@@ -33,10 +33,9 @@ def bytecode_post():
 def inst_to_str(inst):
     """Convert a bytecode instruction to a string."""
     if inst.arg is not None:
-        padding = ' ' * (25 - len(inst.opname))
         return {'opname': inst.opname,'arg': str(inst.arg), 'argrepr': inst.argrepr}
     else:
-        return inst.opname
+        return {'opname': inst.opname, 'arg': "", 'argrepr': ""}
 
 def group_bytecode(bytecode):
     """Yield tuples of bytecode instructions, with each tuple matching a single line of source
