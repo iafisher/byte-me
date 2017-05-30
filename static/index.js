@@ -32,7 +32,7 @@ function addBytecode(data) {
 	    col.appendChild(table);
 	    row.appendChild(col);
 	    $("#mainContainer").append(row);
-	    document.getElementById("bytecode-table").innerHTML='<thead><tr><th>Bytecode</th><th>Opname</th><th>Argument Index</th><th>Argument</th></tr></thead>';
+	    document.getElementById("bytecode-table").innerHTML='<thead><tr><th>Source Code</th><th>Opname</th><th>Argument Index</th><th>Argument</th></tr></thead>';
 	    var body = document.createElement("tbody");
 	    body.id = "tableBody";
 	    table.append(body);
