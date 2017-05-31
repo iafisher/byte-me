@@ -46,16 +46,24 @@ function rowsFromCodePack(code) {
 
 function makeTableRow(source, bytecode) {
     if (bytecode) {
-        var desc = bytecodeDescriptions[bytecode.opname] || '';
+        var desc = getDescription(bytecode);
         return '<tr><td>' + source + '</td><td>' + bytecode.opname + '</td><td>' + desc + '</td></tr>';
     } else {
         return '<tr><td>' + source + '</td><td></td><td></td></tr>';
     }
 }
 
-var bytecodeDescriptions = {
-    LOAD_CONST: "Push the constant value onto the stack",
-    STORE_NAME: "Pop the top value off the stack and store it in the name",
-    LOAD_NAME: "Retrieve the value stored under the name and push it onto the stack",
-    BINARY_ADD: "Pop the top two values off the stack, add them, and push the result",
+function getDescription(bytecode) {
+    switch (bytecode.opname) {
+        case "LOAD_CONST":
+            return "Push " + bytecode.argrepr + " onto the stack";
+        case "STORE_NAME":
+            return "Pop the top value off the stack and store it as " + bytecode.argrepr;
+        case "LOAD_NAME":
+            return "Retrieve the value stored as " + bytecode.argrepr + " and push it onto the stack";
+        case "BINARY_ADD":
+            return "Pop the top two values off the stack, add them, and push the result";
+        default:
+            return "";
+    }
 }
