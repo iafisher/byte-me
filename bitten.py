@@ -17,7 +17,7 @@ def bytecode_post():
              {'source':'x = 5', bytecode:['LOAD_CONST 0 (5)', 'STORE_NAME 0 (x)']}
            ]
     """
-    return source_code_to_bytecode(request.form['sourceCode'])
+    return json.dumps(source_code_to_bytecode(request.form['sourceCode']))
 
 def source_code_to_bytecode(source_code):
     """Convert the source code (as a string) to a JSON representation of the bytecode. See the
@@ -26,14 +26,14 @@ def source_code_to_bytecode(source_code):
     try:
         bytecode = dis.get_instructions(source_code)
     except SyntaxError:
-        return json.dumps('Syntax error on line {}'.format(i + 1))
+        return 'Syntax error on line {}'.format(i + 1)
     else:
         ret = []
         for line, byte_group in zip(source_code.splitlines(), group_bytecode(bytecode)):
             # this check prevents blank lines from being added
             if line or byte_group:
                 ret.append({'source':line, 'bytecode':list(map(instruction_to_json, byte_group))})
-        return json.dumps(ret)
+        return ret
 
 def instruction_to_json(inst):
     """Convert a bytecode instruction to a JSON-serializable object."""
