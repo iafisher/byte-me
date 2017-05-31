@@ -20,27 +20,43 @@ def bytecode_post():
     """Handle POST requests of source code by returning the compiled bytecode as JSON. A sample
        return value is
 
-           [
-             {'source':'x = 5', bytecode:['LOAD_CONST 0 (5)', 'STORE_NAME 0 (x)']}
-           ]
-    """
-    return json.dumps(source_code_to_bytecode(request.form['sourceCode']))
+          {'<module>': [{'source': 'x = 5', 'bytecode': [{'arg': '0', 'argrepr': '5', 'opname':
+          'LOAD_CONST'}, {'arg': '0', 'argrepr': 'x', 'opname': 'STORE_NAME'}, {'arg': '1',
+          'argrepr': 'None', 'opname': 'LOAD_CONST'}, {'arg': '', 'argrepr': '', 'opname': 'RETURN_VALUE'}]}]}
 
-def source_code_to_bytecode(source_code):
-    """Convert the source code (as a string) to a JSON representation of the bytecode. See the
-       docstring for bytecode_post for the exact format.
     """
+    source = request.form['sourceCode']
     try:
-        bytecode = dis.get_instructions(source_code)
-    except SyntaxError:
-        return 'Syntax error on line {}'.format(i + 1)
-    else:
-        ret = []
-        for line, byte_group in zip(source_code.splitlines(), group_bytecode(bytecode)):
-            # this check prevents blank lines from being added
-            if line and byte_group:
-                ret.append({'source': line, 'bytecode': list(map(instruction_to_json, byte_group))})
-        return ret
+        module_bytecode = dis.Bytecode(source)
+    except SyntaxError as e:
+        return json.dumps('Syntax error at line {}'.format(e.lineno))
+    functions = extract_functions(module_bytecode)
+    ret = {}
+    for f in functions:
+        ret[f.co_name] = package_code([''] * 100, f)
+    ret['<module>'] = package_code(source.splitlines(), module_bytecode)
+    return json.dumps(ret)
+    # we'll need a way to get at the source code for the functions; I think I know how to do that
+    # return json.dumps([package_code(source.splitlines(), module_bytecode)] + [package_code([''] * 100, f) for f in functions])
+
+def package_code(source_code, bytecode):
+    ret = []
+    for line, byte_group in zip(source_code, group_bytecode(bytecode)):
+    	# this check prevents blank lines from being added
+        if line and byte_group:
+            ret.append({'source': line, 'bytecode': list(map(instruction_to_json, byte_group))})
+    return ret
+
+def extract_functions(bytecode):  # nomenclature!
+    code_object = bytecode.codeobj
+    code_type = type(code_object)
+    functions = [x for x in code_object.co_consts if isinstance(x, code_type)]
+    # functions = {x.co_name: x for x in code_object.co_consts if isinstance(x, code_type)}
+    ### TO GET THE FUNCTION'S NAME
+    #f = functions[0]
+    #name = f.co_name
+    ###
+    return functions
 
 def instruction_to_json(inst):
     """Convert a bytecode instruction to a JSON-serializable object."""
