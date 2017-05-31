@@ -38,16 +38,16 @@ def source_code_to_bytecode(source_code):
         ret = []
         for line, byte_group in zip(source_code.splitlines(), group_bytecode(bytecode)):
             # this check prevents blank lines from being added
-            if line or byte_group:
-                ret.append({'source':line, 'bytecode':list(map(instruction_to_json, byte_group))})
+            if line and byte_group:
+                ret.append({'source': line, 'bytecode': list(map(instruction_to_json, byte_group))})
         return ret
 
 def instruction_to_json(inst):
     """Convert a bytecode instruction to a JSON-serializable object."""
     if inst.arg is not None:
-        return {'opname':inst.opname, 'arg':str(inst.arg), 'argrepr':inst.argrepr}
+        return {'opname': inst.opname, 'arg': str(inst.arg), 'argrepr': inst.argrepr}
     else:
-        return {'opname':inst.opname, 'arg':"", 'argrepr':""}
+        return {'opname': inst.opname, 'arg': "", 'argrepr': ""}
 
 def group_bytecode(bytecode):
     """Yield a tuple of bytecode instructions for each line of the source code that the bytecode
