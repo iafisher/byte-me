@@ -20,8 +20,8 @@ function addBytecode(data) {
             // clear the error box
             $("#syntaxError").text("");
             // remove all previous bytecode elements
-            $(".bytecode-row").detach();
-	    //create row, col, table
+            $("#bytecode-table").detach();
+	    // create row, col, table
 	    var row = document.createElement("div");
 	    row.setAttribute("class", "row bytecode-row justify-content-center");
 	    var col = document.createElement("div");
@@ -55,10 +55,12 @@ function createBytecodeRow(codeObj) {
     var argrepr = document.createElement("td");
     source.setAttribute("scope", "row");
     source.innerHTML = codeObj.source;
-    opname.innerHTML = codeObj.bytecode[0].opname;
-    opname.setAttribute("class", codeObj.bytecode[0].opname);
-    arg.innerHTML = codeObj.bytecode[0].arg;
-    argrepr.innerHTML = codeObj.bytecode[0].arg;
+    if (codeObj.bytecode.length > 0) {
+        opname.innerHTML = codeObj.bytecode[0].opname;
+        opname.setAttribute("class", codeObj.bytecode[0].opname);
+        arg.innerHTML = codeObj.bytecode[0].arg;
+        argrepr.innerHTML = codeObj.bytecode[0].argrepr;
+    }
     tablerow.append(source);
     tablerow.append(opname);
     tablerow.append(arg);

@@ -17,38 +17,21 @@ def bytecode_post():
              {'source':'x = 5', bytecode:['LOAD_CONST 0 (5)', 'STORE_NAME 0 (x)']}
            ]
     """
+    source_code = request.form['sourceCode']
     try:
-        source_code = request.form['sourceCode']
-        bytecode = dis.Bytecode(source_code)
+        ret = []
+        for i, line in enumerate(source_code.splitlines()):
+            # last two instructions are spurious
+            instructions = list(dis.get_instructions(line, first_line=i))[:-2]
+            if line or instructions:
+                ret.append({'source':line, 'bytecode':list(map(instruction_to_json, instructions))})
+        return json.dumps(ret)
     except SyntaxError as e:
         return json.dumps('Syntax error on line {}'.format(e.lineno))
-    else:
-        ret = []
-        # match each source code line with its bytecode instructions, and package them as a single
-        # JSON object
-        for line, inst_group in zip(source_code.splitlines(), group_bytecode(bytecode)):
-            ret.append({'source':line, 'bytecode':list(map(inst_to_str, inst_group)) })
-        return json.dumps(ret)
 
-def inst_to_str(inst):
-    """Convert a bytecode instruction to a string."""
+def instruction_to_json(inst):
+    """Convert a bytecode instruction to a JSON-serializable object."""
     if inst.arg is not None:
-        return {'opname': inst.opname,'arg': str(inst.arg), 'argrepr': inst.argrepr}
+        return {'opname':inst.opname, 'arg':str(inst.arg), 'argrepr':inst.argrepr}
     else:
-        return {'opname': inst.opname, 'arg': "", 'argrepr': ""}
-
-def group_bytecode(bytecode):
-    """Yield tuples of bytecode instructions, with each tuple matching a single line of source
-       code.
-    """
-    collect = []
-    for inst in bytecode:
-        if inst.starts_line:
-            if collect:
-                yield tuple(collect)
-            collect.clear()
-        collect.append(inst)
-    if collect:
-        yield tuple(collect)
-
-    
+        return {'opname':inst.opname, 'arg':"", 'argrepr':""}
