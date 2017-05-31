@@ -31,7 +31,7 @@ function addBytecode(data) {
 }
 
 function makeTable(data) {
-    return '<table class="table table-hover" id="bytecodeTable"><thead><tr><th>Source Code</th><th>Opname</th><th>Argument Index</th><th>Argument</th></tr></thead><tbody>' + makeTableBody(data) + '</tbody></table>';
+    return '<table class="table table-hover" id="bytecodeTable"><thead><tr><th>Source Code</th><th>Opname</th><th>Description</th></tr></thead><tbody>' + makeTableBody(data) + '</tbody></table>';
 }
 
 function makeTableBody(data) {
@@ -46,8 +46,16 @@ function rowsFromCodePack(code) {
 
 function makeTableRow(source, bytecode) {
     if (bytecode) {
-        return '<tr><td>' + source + '</td><td>' + bytecode.opname + '</td><td>' + bytecode.arg + '</td><td>' + bytecode.argrepr + '</td></tr>';
+        var desc = bytecodeDescriptions[bytecode.opname] || '';
+        return '<tr><td>' + source + '</td><td>' + bytecode.opname + '</td><td>' + desc + '</td></tr>';
     } else {
-        return '<tr><td>' + source + '</td><td></td><td></td><td></td></tr>';
+        return '<tr><td>' + source + '</td><td></td><td></td></tr>';
     }
+}
+
+var bytecodeDescriptions = {
+    LOAD_CONST: "Push the constant value onto the stack",
+    STORE_NAME: "Pop the top value off the stack and store it in the name",
+    LOAD_NAME: "Retrieve the value stored under the name and push it onto the stack",
+    BINARY_ADD: "Pop the top two values off the stack, add them, and push the result",
 }
