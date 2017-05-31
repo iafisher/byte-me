@@ -17,7 +17,12 @@ def bytecode_post():
              {'source':'x = 5', bytecode:['LOAD_CONST 0 (5)', 'STORE_NAME 0 (x)']}
            ]
     """
-    source_code = request.form['sourceCode']
+    return source_code_to_bytecode(request.form['sourceCode'])
+
+def source_code_to_bytecode(source_code):
+    """Convert the source code (as a string) to a JSON representation of the bytecode. See the
+       docstring for bytecode_post for the exact format.
+    """
     try:
         bytecode = dis.get_instructions(source_code)
     except SyntaxError:
