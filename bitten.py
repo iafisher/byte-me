@@ -1,3 +1,9 @@
+"""The module for handling the Flask stuff.
+
+The website boils down a single HTML page and a POST handler that takes in source code and spits
+out a code package that pairs each line of source code with its matching CPython bytecode
+instructions. For details, see the bytecode_post function.
+"""
 import dis
 import json
 
@@ -6,6 +12,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    """Render the homepage."""
     return render_template('index.html', name='index')
 
 @app.route('/bytecode', methods=['POST'])
