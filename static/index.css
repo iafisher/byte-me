@@ -14,28 +14,13 @@
   padding-top: 30px;
 }
 
-.bytecode-row {
-  padding-top: 10px;
-}
-
-.code-pair {
-  border: 1px solid gray;
-  padding: 5px;
-  margin: 2.5px;
-}
 .table {
     font-family: monospace;
     font-size: 12px;
 }
 
-
 #compile {
   margin-top: 20px;
-}
-
-/* Override the CodeMirror CSS for our bytecode */
-.bytecode-row pre {
-  margin-bottom: 0px;
 }
 
 #syntaxError {
