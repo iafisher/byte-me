@@ -22,12 +22,12 @@ def bytecode_post():
         ret = []
         for i, line in enumerate(source_code.splitlines()):
             # last two instructions are spurious
-            instructions = list(dis.get_instructions(line, first_line=i))[:-2]
+            instructions = list(dis.get_instructions(line))[:-2]
             if line or instructions:
                 ret.append({'source':line, 'bytecode':list(map(instruction_to_json, instructions))})
         return json.dumps(ret)
-    except SyntaxError as e:
-        return json.dumps('Syntax error on line {}'.format(e.lineno))
+    except SyntaxError:
+        return json.dumps('Syntax error on line {}'.format(i + 1))
 
 def instruction_to_json(inst):
     """Convert a bytecode instruction to a JSON-serializable object."""
