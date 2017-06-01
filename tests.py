@@ -1,49 +1,43 @@
 #!/usr/bin/env python3
 import unittest
+import dis
 
-from bitten import source_code_to_bytecode
+from bitten import package_code
 
 class SourceCodeToBytecodeTest(unittest.TestCase):
     def test_simple(self):
-        pack = source_code_to_bytecode('x = 2')
+        pack = self.package_code_helper('x = 2')
         self.x_equals_2_invariant(pack)
 
     def test_blank_lines(self):
         """Make sure that blank lines are ignored."""
-        pack = source_code_to_bytecode('\n\nx = 2\n\n\n')
+        pack = self.package_code_helper('\n\nx = 2\n\n\n')
         self.x_equals_2_invariant(pack)
 
-    def test_pass(self):
-        """Make sure that pass statements show up with no bytecode."""
-        pack = source_code_to_bytecode('pass\npass\npass')
-        self.code_package_invariants(pack)
-        self.assertEqual(len(pack), 3)
-        self.assertEqual(pack[0]['source'], 'pass')
-        self.assertEqual(pack[1]['source'], 'pass')
-        self.assertEqual(pack[2]['source'], 'pass')
-        self.assertEqual(pack[0]['bytecode'], [])
-        self.assertEqual(pack[1]['bytecode'], [])
-        self.assertEqual(pack[2]['bytecode'], [j('LOAD_CONST', '0', 'None'),
-                                               j('RETURN_VALUE', None, None)])
+    def package_code_helper(self, code):
+        return package_code('<module>', code.splitlines(), dis.Bytecode(code))
 
     def x_equals_2_invariant(self, pack):
         """Assert all necessary facts about the code package created from 'x = 2'"""
         self.code_package_invariants(pack)
-        self.assertEqual(len(pack), 1)
-        self.assertEqual(pack[0]['source'], 'x = 2')
-        self.assertEqual(pack[0]['bytecode'], [j('LOAD_CONST', '0', '2'),
-                                               j('STORE_NAME', '0', 'x'),
-                                               j('LOAD_CONST', '1', 'None'),
-                                               j('RETURN_VALUE', None, None)])
+        inner_pack = pack['package']
+        self.assertEqual(len(inner_pack), 1)
+        self.assertEqual(inner_pack[0]['source'], 'x = 2')
+        self.assertEqual(inner_pack[0]['bytecode'], [j('LOAD_CONST', '0', '2'),
+                                                    j('STORE_NAME', '0', 'x'),
+                                                    j('LOAD_CONST', '1', 'None'),
+                                                    j('RETURN_VALUE', None, None)])
 
     def code_package_invariants(self, c):
         """Assert some necessary facts about code package objects. Normally we wouldn't bother
            checking the types of Python objects, but it's actually important in this case because
            these will have to be JSON serialized and handled by client-side JavaScript.
         """
-        self.assertIsInstance(c, list)
-        for pair in c:
-            self.code_pair_invariants(pair)
+        self.assertIsInstance(c, dict)
+        self.assertEqual(len(c), 2)
+        self.assertIn('name', c)
+        self.assertIn('package', c)
+        self.assertIsInstance(c['name'], str)
 
     def code_pair_invariants(self, cp):
         """Assert some necessary facts about code pair objects."""
