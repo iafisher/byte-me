@@ -7,6 +7,7 @@ instructions. For details, see the bytecode_post function.
 import dis
 import json
 import html
+import itertools
 
 from flask import Flask, render_template, request
 app = Flask(__name__)
@@ -43,24 +44,36 @@ def bytecode_post():
     except SyntaxError as e:
         return json.dumps('Syntax error at line {}'.format(e.lineno))
     functions = extract_functions(module_bytecode)
-    ret = [package_code(f.co_name, ['pass'] * 100, dis.Bytecode(f)) for f in functions]
+    ret = [package_code(f.co_name, extract_source_code(source.splitlines(), f), dis.Bytecode(f)) 
+               for f in functions]
     # prepend the <module> code so that it shows up first on the website
     ret = [package_code('<module>', source.splitlines(), module_bytecode)] + ret
     return html.escape(json.dumps(ret), quote=False)
 
 def package_code(name, source_code, bytecode):
     ret = []
-    for line, byte_group in zip(source_code, group_bytecode(bytecode)):
-    	# this check prevents blank lines from being added
-        if line and byte_group:
-            ret.append({'source': line, 'bytecode': list(map(instruction_to_json, byte_group))})
+    for lineno, byte_group in group_bytecode(bytecode):
+        try:
+            ret.append({'source': source_code[lineno],
+                        'bytecode': list(map(instruction_to_json, byte_group))})
+        except IndexError:
+            print(source_code, lineno)
     return {'name':name, 'package':ret}
 
 def extract_functions(bytecode):
+    """Return a list of function code objects that are defined in the bytecode."""
     code_object = bytecode.codeobj
     code_type = type(code_object)
     functions = [x for x in code_object.co_consts if isinstance(x, code_type)]
     return functions
+
+def extract_source_code(source_lines, f_code):
+    """Given the source code for an entire module and the code object of a single function, return
+       the source code of that function as a list of strings.
+    """
+    bytecode = dis.Bytecode(f_code)
+    last_line = max(i.starts_line for i in bytecode if i.starts_line is not None)
+    return source_lines[bytecode.first_line : last_line + 1]
 
 def instruction_to_json(inst):
     """Convert a bytecode instruction to a JSON-serializable object."""
@@ -70,24 +83,16 @@ def instruction_to_json(inst):
         return {'opname': inst.opname, 'arg': "", 'argrepr': ""}
 
 def group_bytecode(bytecode):
-    """Yield a tuple of bytecode instructions for each line of the source code that the bytecode
-       was compiled from. For lines of source code with no correspondent bytecode instructions,
-       the empty tuple is yielded.
+    """Yield (lineno, (<bytecode instructions>)) tuples for the bytecode object. The line numbers
+       are zero-indexed.
     """
     collect = []
-    last_line = 1
+    last_line = bytecode.first_line
     for instruction in bytecode:
-        if instruction.starts_line:
-            # when encountering an instruction starting a new line, yield the bytecode from the
-            # previous line (as long as it's not the first line)
-            if instruction.starts_line != 1:
-                yield tuple(collect)
-                collect.clear()
-            # yield empty tuples for lines with no bytecode instructions, so that they can be
-            # paired correctly
-            for _ in range(last_line, instruction.starts_line - 1):
-                yield tuple()
+        if instruction.starts_line and collect:
+            yield (last_line - 1, tuple(collect))
+            collect.clear()
             last_line = instruction.starts_line
         collect.append(instruction)
     if collect:
-        yield tuple(collect)
+        yield (last_line - 1, tuple(collect))
