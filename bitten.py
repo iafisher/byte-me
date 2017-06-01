@@ -43,9 +43,9 @@ def bytecode_post():
     except SyntaxError as e:
         return json.dumps('Syntax error at line {}'.format(e.lineno))
     functions = extract_functions(module_bytecode)
-    ret [package_code(f.co_name, ['pass'] * 100, dis.Bytecode(f)) for f in functions]
+    ret = [package_code(f.co_name, ['pass'] * 100, dis.Bytecode(f)) for f in functions]
     # prepend the <module> code so that it shows up first on the website
-    ret [package_code('<module>', source.splitlines(), module_bytecode)] + ret
+    ret = [package_code('<module>', source.splitlines(), module_bytecode)] + ret
     return html.escape(json.dumps(ret), quote=False)
 
 def package_code(name, source_code, bytecode):
