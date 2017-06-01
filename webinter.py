@@ -40,9 +40,13 @@ def bytecode_post():
        ]
 
     """
-    packlist = package_module(request.form['sourceCode'])
-    ret = json.dumps(json_comply(packlist))
-    return html.escape(ret, quote=False)
+    try:
+        packlist = package_module(request.form['sourceCode'])
+    except SyntaxError as e:
+        ret = 'Syntax error at line ' + str(e.lineno)
+    else:
+        ret = json_comply(packlist)
+    return html.escape(json.dumps(ret), quote=False)
 
 
 def json_comply(packlist):
