@@ -6,6 +6,7 @@ instructions. For details, see the bytecode_post function.
 """
 import dis
 import json
+import html
 
 from flask import Flask, render_template, request
 app = Flask(__name__)
@@ -20,9 +21,20 @@ def bytecode_post():
     """Handle POST requests of source code by returning the compiled bytecode as JSON. A sample
        return value is
 
-          {'<module>': [{'source': 'x = 5', 'bytecode': [{'arg': '0', 'argrepr': '5', 'opname':
-          'LOAD_CONST'}, {'arg': '0', 'argrepr': 'x', 'opname': 'STORE_NAME'}, {'arg': '1',
-          'argrepr': 'None', 'opname': 'LOAD_CONST'}, {'arg': '', 'argrepr': '', 'opname': 'RETURN_VALUE'}]}]}
+       [
+        {'name':'<module>', 
+         'package':[
+                    {'source':'x = 5',
+                     'bytecode' [
+                                 {'arg': '0', 'argrepr': '5', 'opname': 'LOAD_CONST'}, 
+                                 ...
+                                ]
+                     },
+                     ...
+                    ]
+        },
+        ...
+       ]
 
     """
     source = request.form['sourceCode']
@@ -31,13 +43,9 @@ def bytecode_post():
     except SyntaxError as e:
         return json.dumps('Syntax error at line {}'.format(e.lineno))
     functions = extract_functions(module_bytecode)
-    ret = {}
-    for f in functions:
-        ret[f.co_name] = package_code([''] * 100, f)
-    ret['<module>'] = package_code(source.splitlines(), module_bytecode)
-    return json.dumps(ret)
-    # we'll need a way to get at the source code for the functions; I think I know how to do that
-    # return json.dumps([package_code(source.splitlines(), module_bytecode)] + [package_code([''] * 100, f) for f in functions])
+    ret = [{'name':f.co_name, 'package':package_code([''] * 100, f)} for f in functions]
+    ret = [{'name':'<module>', 'package':package_code(source.splitlines(), module_bytecode)}] + ret
+    return html.escape(json.dumps(ret), quote=False)
 
 def package_code(source_code, bytecode):
     ret = []
