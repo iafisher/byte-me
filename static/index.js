@@ -12,7 +12,6 @@ $("#compile").click(function() {
             // activate the first tab
             $("#tabs li:first").addClass("active");
             $("#tabContent div:first").addClass("active");
-	    registerTooltips();    
 	}
     });
 });
