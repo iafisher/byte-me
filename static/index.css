@@ -34,3 +34,10 @@
 #bytecodeTable {
   margin-top: 10px;
 }
+#syntaxError {
+  background-color: white;
+  border: 0;
+}
+#tabs {
+  display: none;
+}

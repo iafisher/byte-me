@@ -1,13 +1,14 @@
 var my_textarea = document.getElementById("sourceCodeTextarea");
-var editor = CodeMirror.fromTextArea(my_textarea, {lineNumbers: true, 
-                                                   mode: "python", 
+var editor = CodeMirror.fromTextArea(my_textarea, {lineNumbers: true,
+                                                   mode: "python",
                                                    smartIndent: true});
 
 $("#compile").click(function() {
+    $("#tabs").show();
     $.ajax({
         url: "/bytecode",
         data: {sourceCode: editor.getValue()},
-        dataType: "json", 
+        dataType: "json",
         method: "POST",
         success: function(data){
 	    addBytecode(data);
@@ -39,7 +40,7 @@ function addBytecode(data) {
 
 // Make the tab panels, each of which containing a bytecode table
 function makeTabPanels(data) {
-    var tabsArray = data.map(function(x, i) { 
+    var tabsArray = data.map(function(x, i) {
         var table = makeTable(x['package']);
         return '<div id="tab' + (i + 1) + '" class="tab-pane">' + table + '</div>';
     });
@@ -72,7 +73,7 @@ function rowsFromCodePack(code) {
 function makeTableRow(source, bytecode) {
     if (bytecode) {
         var desc = getDescription(bytecode);
-        return '<tr><td>' + source + '</td><td>' + bytecode.opname + '</td><td>' + 
+        return '<tr><td>' + source + '</td><td>' + bytecode.opname + '</td><td>' +
                desc + '</td></tr>';
     } else {
         return '<tr><td>' + source + '</td><td></td><td></td></tr>';
@@ -86,7 +87,7 @@ function getDescription(bytecode) {
         case "STORE_NAME":
             return "Pop the top value off the stack and store it as " + bytecode.argrepr;
         case "LOAD_NAME":
-            return "Retrieve the value stored as " + bytecode.argrepr + 
+            return "Retrieve the value stored as " + bytecode.argrepr +
                    " and push it onto the stack";
         case "BINARY_ADD":
             return "Pop the top two values off the stack, add them, and push the result";
