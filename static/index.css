@@ -14,9 +14,11 @@
   padding-top: 30px;
 }
 
-.table {
-    font-family: monospace;
-    font-size: 12px;
+tbody {
+    font-size: 16px;
+}
+.source, .opname, li{
+  font-family: monospace;
 }
 
 #compile {

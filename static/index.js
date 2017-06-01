@@ -73,7 +73,7 @@ function rowsFromCodePack(code) {
 function makeTableRow(source, bytecode) {
     if (bytecode) {
         var desc = getDescription(bytecode);
-        return '<tr><td>' + source + '</td><td>' + bytecode.opname + '</td><td>' +
+        return '<tr><td class="source">' + source + '</td><td class="opname">' + bytecode.opname + '</td><td class="desc">' +
                desc + '</td></tr>';
     } else {
         return '<tr><td>' + source + '</td><td></td><td></td></tr>';
