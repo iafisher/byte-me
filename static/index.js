@@ -9,7 +9,9 @@ $("#compile").click(function() {
         method: "POST",
         success: function(data){
 	    addBytecode(data);
-            // this comes from the tooltip.js script
+            // activate the first tab
+            $("#tabs li:first").addClass("active");
+            $("#tabContent div:first").addClass("active");
 	    registerTooltips();    
 	}
     });
@@ -19,8 +21,10 @@ function addBytecode(data) {
     if (typeof data !== "string") {
         // clear the error box
         $("#syntaxError").text("");
+        // remove all tabs
+        $("#tabs").empty();
         // remove the previous bytecode table, if it existed
-        $("#bytecodeTable").detach();
+        $("#tabContent").detach();
         $("#tableColumn").append(makeTabs(data));
     } else {
         $("#syntaxError").text(data);
@@ -28,23 +32,22 @@ function addBytecode(data) {
 }
 
 function makeTabs(data) {
-    $("#tabs").append('<li class="active"><a href="#">' + data[0]['name'] + '</a></li>');
-    for (var i = 1; i < data.length; i++) {
-        $("#tabs").append('<li><a href="#">' + data[i]['name'] + '</a></li>');
+    for (var i = 0; i < data.length; i++) {
+        var href = '#tab' + (i + 1);
+        $("#tabs").append('<li><a href="' + href + '" data-toggle="tab">' + data[i]['name'] + '</a></li>');
     }
     var mapped = data.map(function(x, i) { return makeTable(x['package'], i); });
     console.log(mapped);
     var tabs = mapped.join('');
     console.log(tabs);
-    return '<div class="tab-content">' + tabs + '</div>';
+    return '<div class="tab-content" id="tabContent">' + tabs + '</div>';
 }
 
 function makeTable(data, i) {
-    var id = 'tab' + (i + 1) + '-slug';
-    var classAttr = 'tab-pane' + ((i === 0) ? ' active' : '');
-    var div = '<div id="' + id + '" class="' + classAttr + '">';
+    var id = 'tab' + (i + 1);
+    var div = '<div id="' + id + '" class="tab-pane">';
     var thead = '<thead><tr><th>Source Code</th><th>Opname</th><th>Description</th></tr></thead>'
-    var ret = div + '<table class="table table-hover" id="bytecodeTable">' + thead + '<tbody>' + makeTableBody(data) + '</tbody></table></div>';
+    var ret = div + '<table class="table table-hover bytecode-table">' + thead + '<tbody>' + makeTableBody(data) + '</tbody></table></div>';
     //console.log(ret);
     return ret;
 }

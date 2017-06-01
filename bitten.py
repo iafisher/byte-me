@@ -43,27 +43,23 @@ def bytecode_post():
     except SyntaxError as e:
         return json.dumps('Syntax error at line {}'.format(e.lineno))
     functions = extract_functions(module_bytecode)
-    ret = [{'name':f.co_name, 'package':package_code([''] * 100, f)} for f in functions]
-    ret = [{'name':'<module>', 'package':package_code(source.splitlines(), module_bytecode)}] + ret
+    ret [package_code(f.co_name, ['pass'] * 100, dis.Bytecode(f)) for f in functions]
+    # prepend the <module> code so that it shows up first on the website
+    ret [package_code('<module>', source.splitlines(), module_bytecode)] + ret
     return html.escape(json.dumps(ret), quote=False)
 
-def package_code(source_code, bytecode):
+def package_code(name, source_code, bytecode):
     ret = []
     for line, byte_group in zip(source_code, group_bytecode(bytecode)):
     	# this check prevents blank lines from being added
         if line and byte_group:
             ret.append({'source': line, 'bytecode': list(map(instruction_to_json, byte_group))})
-    return ret
+    return {'name':name, 'package':ret}
 
-def extract_functions(bytecode):  # nomenclature!
+def extract_functions(bytecode):
     code_object = bytecode.codeobj
     code_type = type(code_object)
     functions = [x for x in code_object.co_consts if isinstance(x, code_type)]
-    # functions = {x.co_name: x for x in code_object.co_consts if isinstance(x, code_type)}
-    ### TO GET THE FUNCTION'S NAME
-    #f = functions[0]
-    #name = f.co_name
-    ###
     return functions
 
 def instruction_to_json(inst):
