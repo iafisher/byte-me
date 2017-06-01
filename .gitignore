@@ -1,6 +1,13 @@
-*.swp
-*~
+# Python cruft
 env
 __pycache__/
-\#*#
 *.pyc
+
+# text editor backups
+*~
+*.swp
+\#*#
+
+# third-party libraries to ignore
+static/bootstrap
+static/CodeMirror

@@ -10,7 +10,9 @@ First, install the requirements (preferably in a virtual environment).
 $ pip3 install -r requirements.txt
 ```
 
-Then, build the CodeMirror library.
+You will also need to download Bootstrap 3.3.7 and CodeMirror 5.25.3 and place them in `static/bootstrap` and `static/CodeMirror`, respectively.
+
+After you've done that, build the CodeMirror library with the following commands.
 
 ```
 $ cd static/CodeMirror
