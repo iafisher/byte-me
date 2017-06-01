@@ -9,5 +9,3 @@ __pycache__/
 \#*#
 
 # third-party libraries to ignore
-static/bootstrap
-static/CodeMirror
