@@ -30,6 +30,6 @@ $ pip3 install -r requirements.txt
 Finally, run the Flask app and visit the website at`localhost:5000` in your browser.
 
 ```
-$ export FLASK_APP=bitten.py
+$ export FLASK_APP=webinter.py
 $ flask run
 ```
