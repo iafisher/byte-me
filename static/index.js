@@ -25,8 +25,19 @@ function addBytecode(data) {
         // remove the previous bytecode table, if it existed
         $("#tabContent").empty();
         // make the new tab headers
-        for (var i = 0; i < data.length; i++) {
+        var regTabNum = Math.min(data.length, 6)
+        for (var i = 0; i < regTabNum; i++) {
             $("#tabs").append(makeTabHeader(data[i]['name'], i));
+        }
+        var button = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></a>'
+        var firstDropdown = '<ul class="dropdown-menu" id = "dropdown"></ul>'
+        var dropdown = '<li class = "dropdown">' + button + firstDropdown + '</li>';
+        if(data.length>=6){
+          $("#tabs").append(dropdown)
+        }
+        for( var i = 6; i < data.length; i++) {
+            console.log("6")
+            $("#dropdown").append(makeTabHeader(data[i]['name'], i));
         }
         // make the new tab panels (with bytecode panels)
         $("#tabContent").append(makeTabPanels(data));
