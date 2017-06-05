@@ -67,7 +67,7 @@ function makeTabHeader(name, i) {
 
 // Make a bytecode table from the code package
 function makeTable(pack) {
-    var thead = '<thead><tr><th>Source Code</th><th>Opname</th><th>Description</th></tr></thead>'
+    var thead = '<thead><tr><th>Line</th><th>Source Code</th><th>Opname</th><th>Description</th></tr></thead>'
     var tbody = '<tbody>' + makeTableBody(pack) + '</tbody>';
     return '<table class="table table-hover bytecode-table">' + thead + tbody + '</table>';
 }
@@ -78,17 +78,16 @@ function makeTableBody(pack) {
 }
 
 function rowsFromCodePack(code) {
-    var firstRow = makeTableRow(code.source, code.bytecode[0]);
-    var otherRows = code.bytecode.slice(1).map(function (b) { return makeTableRow('', b); });
+    var firstRow = makeTableRow(code.source, code.lineno, code.bytecode[0]);
+    var otherRows = code.bytecode.slice(1).map(function (b) { return makeTableRow('', '', b); });
     return firstRow + otherRows.join("");
 }
 
-function makeTableRow(source, bytecode) {
+function makeTableRow(source, lineno, bytecode) {
     if (bytecode) {
         var desc = getDescription(bytecode);
-        return '<tr><td class="source">' + source + '</td><td class="opname">' + bytecode.opname + '</td><td class="desc">' +
-               desc + '</td></tr>';
+        return '<tr><td>' + lineno + '<td class="source">' + source + '</td><td class="opname">' + bytecode.opname + '</td><td class="desc">' + desc + '</td></tr>';
     } else {
-        return '<tr><td>' + source + '</td><td></td><td></td></tr>';
+        return '<tr><td></td><td>' + source + '</td><td></td><td></td></tr>';
     }
 }

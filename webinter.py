@@ -56,7 +56,8 @@ def json_comply_code_package(package):
     return {'name':package.name, 'package':json_comply_code_pairs(package.code_pairs)}
 
 def json_comply_code_pairs(code_pairs):
-    return [{'source':p.source, 'bytecode':json_comply_bytecode(p.bytecode)} for p in code_pairs]
+    return [{'lineno':p.lineno, 'source':p.source, 'bytecode':json_comply_bytecode(p.bytecode)} 
+                 for p in code_pairs]
 
 def json_comply_bytecode(bytecode_list):
     ret = []
