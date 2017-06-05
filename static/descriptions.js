@@ -52,7 +52,7 @@ var descDict = {
     RETURN_VALUE: "Return {{TOS}} to the caller of the function",
     YIELD_VALUE: "Pop {{TOS}} and yield it from a generator",
     YIELD_FROM: "Pop {{TOS}} and use it as a subiterator from a generator",
-    IMPORT_STAR: "Pop {{TOS}} (interpreting it as a module) and implement all symbols from it",
+    IMPORT_STAR: "Pop {{TOS}} (interpreting it as a module) and import all symbols from it",
     POP_BLOCK: "Remove a block from the block stack",
     POP_EXCEPT: "Remove an exception handler block from the block stack",
     END_FINALLY: "End a finally clause",
