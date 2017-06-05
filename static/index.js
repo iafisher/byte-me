@@ -1,7 +1,9 @@
 var my_textarea = document.getElementById("sourceCodeTextarea");
-var editor = CodeMirror.fromTextArea(my_textarea, {lineNumbers: true,
-                                                   mode: "python",
-                                                   smartIndent: true});
+var editor = CodeMirror.fromTextArea(my_textarea, {
+    lineNumbers: true, 
+    mode: "python", 
+    indentUnit: 4,
+});
 
 $("#compile").click(function() {
     $("#tabs").show();
