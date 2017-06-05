@@ -18,7 +18,7 @@ class CodePackage:
     
     def __init__(self, name, source_lines, bytecode):
         self.name = name
-        self.code_pairs = [CodePair(source_lines[n], g) for n, g in group_bytecode(bytecode)]
+        self.code_pairs = [CodePair(n, source_lines[n-1], g) for n, g in group_bytecode(bytecode)]
 
     @classmethod
     def fromfunction(cls, source_lines, f):
@@ -28,13 +28,11 @@ class CodePackage:
         return cls(f.co_name, source_lines, dis.Bytecode(f))
 
 
-CodePair = namedtuple('CodePair', ['source', 'bytecode'])
+CodePair = namedtuple('CodePair', ['lineno', 'source', 'bytecode'])
 
 
-def group_bytecode(bytecode, line_offset=-1):
-    """Yield (lineno, (<bytecode instructions>)) tuples for the bytecode object. The line numbers
-       are zero-indexed by default, but this can be customized with the line_offset argument.
-    """
+def group_bytecode(bytecode):
+    """Yield (lineno, (<bytecode instructions>)) tuples for the bytecode object."""
     bytecode_iter = iter(bytecode)
     try:
         first_instruction = next(bytecode_iter)
@@ -45,12 +43,12 @@ def group_bytecode(bytecode, line_offset=-1):
         last_line = first_instruction.starts_line
         for instruction in bytecode_iter:
             if instruction.starts_line and collect:
-                yield (last_line + line_offset, tuple(collect))
+                yield (last_line, tuple(collect))
                 collect.clear()
                 last_line = instruction.starts_line
             collect.append(instruction)
         if collect:
-            yield (last_line + line_offset, tuple(collect))
+            yield (last_line, tuple(collect))
 
 def extract_functions(codeobj):
     """Return a list of all functions defined in the code object, including nested function
