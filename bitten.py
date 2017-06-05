@@ -25,29 +25,32 @@ class CodePackage:
         """Construct a code package from the source code of an entire module and a code object of
            a function defined within that module.
         """
-        bytecode = dis.Bytecode(f)
-        # change the first line from the 'def ...' line to the first line of the body
-        bytecode.first_line += 1
-        return cls(f.co_name, source_lines, bytecode)
+        return cls(f.co_name, source_lines, dis.Bytecode(f))
 
 
 CodePair = namedtuple('CodePair', ['source', 'bytecode'])
 
 
-def group_bytecode(bytecode):
+def group_bytecode(bytecode, line_offset=-1):
     """Yield (lineno, (<bytecode instructions>)) tuples for the bytecode object. The line numbers
-       are zero-indexed.
+       are zero-indexed by default, but this can be customized with the line_offset argument.
     """
-    collect = []
-    last_line = bytecode.first_line
-    for instruction in bytecode:
-        if instruction.starts_line and collect:
-            yield (last_line - 1, tuple(collect))
-            collect.clear()
-            last_line = instruction.starts_line
-        collect.append(instruction)
-    if collect:
-        yield (last_line - 1, tuple(collect))
+    bytecode_iter = iter(bytecode)
+    try:
+        first_instruction = next(bytecode_iter)
+    except StopIteration:
+        pass
+    else:
+        collect = [first_instruction]
+        last_line = first_instruction.starts_line
+        for instruction in bytecode_iter:
+            if instruction.starts_line and collect:
+                yield (last_line + line_offset, tuple(collect))
+                collect.clear()
+                last_line = instruction.starts_line
+            collect.append(instruction)
+        if collect:
+            yield (last_line + line_offset, tuple(collect))
 
 def extract_functions(codeobj):
     """Return a list of all functions defined in the code object, including nested function
