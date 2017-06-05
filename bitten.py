@@ -8,8 +8,8 @@ def package_module(source):
     module_bytecode = dis.Bytecode(source)
     source_lines = source.splitlines()
     module_package = CodePackage('<module>', source_lines, module_bytecode)
-    functions = [CodePackage.fromfunction(source_lines, f)
-                    for f in extract_functions(module_bytecode.codeobj)]
+    functions = [CodePackage(n, source_lines, dis.Bytecode(f))
+                    for n, f in extract_functions(module_bytecode.codeobj)]
     return [module_package] + functions
 
 
@@ -50,14 +50,14 @@ def group_bytecode(bytecode):
         if collect:
             yield (last_line, tuple(collect))
 
-def extract_functions(codeobj):
-    """Return a list of all functions defined in the code object, including nested function
-       definitions.
+def extract_functions(codeobj, prefix=''):
+    """Yield (name, code_obj) pairs for all functions, classes, list comprehensions etc. defined
+       in the code object, including nested definitions. The prefix is prepended to each name; it
+       should either by the empty string or a string ending with a period.
     """
     code_type = type(codeobj)
-    ret = []
     for x in codeobj.co_consts:
         if isinstance(x, code_type):
-            ret.append(x)
-            ret.extend(extract_functions(x))
-    return ret
+            fullname = prefix + x.co_name
+            yield (fullname,  x)
+            yield from extract_functions(x, fullname + '.')
