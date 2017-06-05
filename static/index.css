@@ -18,6 +18,10 @@ tbody {
     font-size: 16px;
 }
 
+td {
+  font-size: 14px;
+}
+
 .mono {
   font-family: monospace;
   background-color: #ecf0f3;
