@@ -8,9 +8,28 @@ def package_module(source):
     module_bytecode = dis.Bytecode(source)
     source_lines = source.splitlines()
     module_package = CodePackage('<module>', source_lines, module_bytecode)
+    fix_final_return(module_package)
     functions = [CodePackage(n, source_lines, dis.Bytecode(f))
                     for n, f in extract_functions(module_bytecode.codeobj)]
     return [module_package] + functions
+
+def fix_final_return(package):
+    """Move the final return instructions (which are appended to every module) to their own line
+       of source code.
+    """
+    def is_final_return(bytecode):
+        """Helper function to check if the bytecode list has the extraneous final return
+           instructions.
+        """
+        return len(bytecode) >= 2 and bytecode[-2].opcode == 100 and \
+               bytecode[-1].opcode == 83
+    # main function body
+    if package.code_pairs:
+        last_pair = package.code_pairs[-1]
+        if is_final_return(last_pair.bytecode):
+           dummy_pair = last_pair._replace(source='<EOF>', bytecode=last_pair.bytecode[-2:])
+           package.code_pairs[-1] = last_pair._replace(bytecode=last_pair.bytecode[:-2])
+           package.code_pairs.append(dummy_pair)
 
 
 class CodePackage:
