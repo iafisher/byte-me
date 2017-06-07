@@ -69,6 +69,22 @@ var descDict = {
     DELETE_NAME: "Delete {{ARGREPR}} from the global namespace",
     LOAD_CONST: "Push {{ARGREPR}} onto the stack",
     LOAD_NAME: "Retrieve the value stored as {{ARGREPR}} and push it onto the stack",
+    BUILD_TUPLE: "Consume {{ARGREPR}} items from the stack and push them back as a tuple",
+    BUILD_LIST: "Consume {{ARGREPR}} items from the stack and push them back as a list",
+    BUILD_SET: "Consume {{ARGREPR}} items from the stack and push them back as a set",
+    BUILD_MAP: "Push a dictionary presized to hold {{ARGREPR}} elements onto the stack",
+    LOAD_ATTR: "Replace {{TOS}} with {{getattr(TOS, \"ARGREPR\")}}",
+    COMPARE_OP: "Perform the {{ARGREPR}} comparison",
+    IMPORT_NAME: "Pop {{TOS} and {{TOS1}} as arguments to {{__import__}}, and push {{ARGREPR}} onto the stack",
+    IMPORT_FROM: "Push {{ARGREPR}} onto the stack from the module in {{TOS}}",
+    JUMP_FORWARD: "Skip {{ARGREPR}} instructions",
+    POP_JUMP_IF_TRUE: "Pop {{TOS}}; if it is {{True}}, jump to {{ARGREPR}}",
+    POP_JUMP_IF_FALSE: "Pop {{TOS}}; if it is {{False}}, jump to {{ARGREPR}}",
+    JUMP_IF_TRUE_OR_POP: "If {{TOS}} is {{True}}, jump to {{ARGREPR}}; otherwise, pop {{TOS}}",
+    JUMP_IF_FALSE_OR_POP: "If {{TOS}} is {{False}}, jump to {{ARGREPR}}; otherwise, pop {{TOS}}",
+    JUMP_ABSOLUTE: "Jump to {{ARGREPR}}",
+    FOR_ITER: "Call {{__next__}} on {{TOS}} (assuming it to be an iterator); if a new value is yielded, push it onto the stack; otherwise, pop {{TOS}} and skip {{ARGREPR}} instructions",
+    LOAD_GLOBAL: "Load the global name {{ARGREPR}} onto the stack",
     // still more to do here
 }
 
