@@ -43,13 +43,11 @@ td {
   margin-top: 10px;
 }
 
-#bytecodeTable {
-  margin-top: 10px;
-}
 #syntaxError {
   background-color: white;
   border: 0;
 }
+
 #tabs {
   display: none;
 }

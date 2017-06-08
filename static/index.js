@@ -38,7 +38,6 @@ function addBytecode(data) {
           $("#tabs").append(dropdown)
         }
         for( var i = 6; i < data.length; i++) {
-            console.log("6")
             $("#dropdown").append(makeTabHeader(data[i]['name'], i));
         }
         // make the new tab panels (with bytecode panels)
@@ -84,10 +83,6 @@ function rowsFromCodePack(code) {
 }
 
 function makeTableRow(source, lineno, bytecode) {
-    if (bytecode) {
-        var desc = getDescription(bytecode);
-        return '<tr><td>' + lineno + '<td class="source">' + source + '</td><td class="opname">' + bytecode.opname + '</td><td class="desc">' + desc + '</td></tr>';
-    } else {
-        return '<tr><td></td><td>' + source + '</td><td></td><td></td></tr>';
-    }
+    var desc = getDescription(bytecode);
+    return '<tr><td>' + lineno + '<td class="source">' + source + '</td><td class="opname">' + bytecode.opname + '</td><td class="desc">' + desc + '</td></tr>';
 }
