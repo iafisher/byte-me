@@ -75,7 +75,7 @@ var descDict = {
     BUILD_MAP: "Push a dictionary presized to hold {{ARGREPR}} elements onto the stack",
     LOAD_ATTR: "Replace {{TOS}} with {{getattr(TOS, \"ARGREPR\")}}",
     COMPARE_OP: "Perform the {{ARGREPR}} comparison",
-    IMPORT_NAME: "Pop {{TOS} and {{TOS1}} as arguments to {{__import__}}, and push {{ARGREPR}} onto the stack",
+    IMPORT_NAME: "Pop {{TOS}} and {{TOS1}} as arguments to {{__import__}}, and push {{ARGREPR}} onto the stack",
     IMPORT_FROM: "Push {{ARGREPR}} onto the stack from the module in {{TOS}}",
     JUMP_FORWARD: "Skip {{ARGREPR}} instructions",
     POP_JUMP_IF_TRUE: "Pop {{TOS}}; if it is {{True}}, jump to {{ARGREPR}}",
