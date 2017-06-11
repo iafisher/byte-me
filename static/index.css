@@ -1,3 +1,5 @@
+/** LAYOUT AND FORMATTING STUFF **/
+
 .CodeMirror {
   border: 1px solid lightgray;
 }
@@ -14,40 +16,38 @@
   padding-top: 30px;
 }
 
-tbody {
-    font-size: 16px;
-}
-
-td {
-  font-size: 14px;
-}
-
-.mono {
-  font-family: monospace;
-  background-color: #ecf0f3;
-}
-
-.source, .opname, li {
-  font-family: monospace;
-}
-
 #compile {
   margin-top: 20px;
 }
 
 #syntaxError {
   margin-top: 10px;
-}
-
-#tabs {
-  margin-top: 10px;
-}
-
-#syntaxError {
   background-color: white;
   border: 0;
 }
 
 #tabs {
+  margin-top: 10px;
   display: none;
+}
+
+
+/** FORMATTING FOR THE TABLE AND TABS **/
+
+td {
+  font-size: 14px;
+}
+
+.lineno-cell, .source-cell, .opname-cell {
+  font-family: monospace, sans-serif;
+}
+
+/* this is applied to snippets of Python code in the bytecode descriptions */
+.py-source {
+  font-family: monospace, sans-serif;
+  background-color: #ecf0f3;
+}
+
+#tabs > li {
+  font-family: monospace, sans-serif;
 }

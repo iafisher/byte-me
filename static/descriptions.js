@@ -91,7 +91,7 @@ var descDict = {
 // replace {{ and }} with the proper HTML tags
 for (var key in descDict) {
     if (descDict.hasOwnProperty(key)) {
-        descDict[key] = descDict[key].replace(/{{(.*?)}}/g, '<span class="mono">$1</span>');
+        descDict[key] = descDict[key].replace(/{{(.*?)}}/g, '<span class="py-source">$1</span>');
     }
 }
 

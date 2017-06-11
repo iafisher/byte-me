@@ -1,24 +1,24 @@
-var my_textarea = document.getElementById("sourceCodeTextarea");
-var editor = CodeMirror.fromTextArea(my_textarea, {
+// set up the text editor using CodeMirror
+var myTextArea = document.getElementById("sourceCodeTextArea");
+var editor = CodeMirror.fromTextArea(myTextArea, {
     lineNumbers: true, 
     mode: "python", 
     indentUnit: 4,
 });
 
 $("#compile").click(function() {
-    $("#tabs").show();
     $.ajax({
         url: "/bytecode",
         data: {sourceCode: editor.getValue()},
         dataType: "json",
         method: "POST",
-        success: function(data) {
-	    addBytecode(data);
-	}
+        success: makeEverything,
     });
 });
 
-function addBytecode(data) {
+
+// Make all the new elements on the page from a data package as returned by the Flask interface
+function makeEverything(data) {
     if (typeof data !== "string") {
         // clear the error box
         $("#syntaxError").text("");
@@ -43,6 +43,8 @@ function addBytecode(data) {
         // activate the first tab
         $("#tabs li:first").addClass("active");
         $("#tabContent div:first").addClass("active");
+        // this only matters on the first compile, when the tabs bar is initially hidden
+        $("#tabs").show();
     } else {
         $("#syntaxError").text(data);
     }
@@ -53,9 +55,11 @@ function makeTabHeader(name, i) {
     return '<li><a href="#tab' + (i + 1) + '" data-toggle="tab">' + name + '</a></li>';
 }
 
-// Make a tab panel from the code package
+// Make a tab panel from a code package
 function makeTabPanel(pack, i) {
-    var thead = '<thead><tr><th>Line</th><th>Source Code</th><th>Opname</th><th>Description</th></tr></thead>';
+    var thead = '<thead><tr>' +
+                   '<th>Line</th><th>Source Code</th><th>Opname</th><th>Description</th>' +
+                '</tr></thead>';
     var tbody = '<tbody>' + makeTableBody(pack) + '</tbody>';
     var table = '<table class="table table-hover bytecode-table">' + thead + tbody + '</table>';
     return '<div id="tab' + (i + 1) + '" class="tab-pane">' + table + '</div>';
@@ -66,20 +70,27 @@ function makeTableBody(pack) {
     return pack.map(makeRowGroup).join("");
 }
 
+// Make a group of rows from a code package
 function makeRowGroup(code) {
+    // only the first row in a row group contains the line number and source code
     var firstRow = makeTableRow(code.source, code.lineno, code.bytecode[0]);
     var otherRows = code.bytecode.slice(1).map(function (b) { return makeTableRow('', '', b); });
     return firstRow + otherRows.join("");
 }
 
+// Make a single row in the table
 function makeTableRow(source, lineno, bytecode) {
-    var desc = getDescription(bytecode);
-    return '<tr><td>' + lineno + '<td class="source">' + source + '</td><td class="opname">' + bytecode.opname + '</td><td class="desc">' + desc + '</td></tr>';
+    var lineCell = '<td class="lineno-cell">' + lineno + '</td>';
+    var sourceCell = '<td class="source-cell">' + source + '</td>';
+    var opnameCell = '<td class="opname-cell">' + bytecode.opname + '</td>';
+    var descCell = '<td class="description-cell">' + getDescription(bytecode) + '</td>';
+    return '<tr>' + lineCell + sourceCell + opnameCell + descCell + '</tr>';
 }
 
 // Make the dropdown list (a static HTML element)
 function makeDropdownList() {
-    var button = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></a>';
+    var button = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ' +
+                    'aria-haspopup="true" aria-expanded="false"><span class="caret"></span></a>';
     var firstDropdown = '<ul class="dropdown-menu" id="dropdownList"></ul>';
     return '<li class="dropdown">' + button + firstDropdown + '</li>';
 }
