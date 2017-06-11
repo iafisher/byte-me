@@ -40,11 +40,9 @@ function makeEverything(data) {
         for (var i = 0; i < data.length; i++) {
             $("#tabContent").append(makeTabPanel(data[i]['package'], i));
         }
-        // activate the first tab
-        $("#tabs li:first").addClass("active");
-        $("#tabContent div:first").addClass("active");
         // this only matters on the first compile, when the tabs bar is initially hidden
         $("#tabs").show();
+        setupActiveTabs();
     } else {
         $("#syntaxError").text(data);
     }
@@ -93,4 +91,23 @@ function makeDropdownList() {
                     'aria-haspopup="true" aria-expanded="false"><span class="caret"></span></a>';
     var firstDropdown = '<ul class="dropdown-menu" id="dropdownList"></ul>';
     return '<li class="dropdown">' + button + firstDropdown + '</li>';
+}
+
+// These functions and global variables handle the active tabs
+var activeTab = 1;
+var activeTabText = "<module>";
+function setupActiveTabs() {
+    $("#tabs > li").click(function(event) {
+        var tabAnchor = $(this).find("a").first();
+        activeTab = tabAnchor.attr("href").slice(-1);
+        activeTabText = tabAnchor.text();
+    });
+    var potentialActiveTab = $("#tabs li:nth-child(" + activeTab + ")");
+    if (!potentialActiveTab.length) {
+        // default is for first tab to be active
+        activeTab = 1;
+        activeTabText = "<module>";
+    }
+    $("#tabs li:nth-child(" + activeTab + ")").addClass("active");
+    $("#tabContent div:nth-child(" + activeTab + ")").addClass("active");
 }
