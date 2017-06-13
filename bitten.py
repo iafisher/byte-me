@@ -27,9 +27,9 @@ def fix_final_return(package):
     if package.code_pairs:
         last_pair = package.code_pairs[-1]
         if is_final_return(last_pair.bytecode):
-           dummy_pair = last_pair._replace(source='<EOF>', bytecode=last_pair.bytecode[-2:])
-           package.code_pairs[-1] = last_pair._replace(bytecode=last_pair.bytecode[:-2])
-           package.code_pairs.append(dummy_pair)
+            dummy_pair = CodePair('<EOF>', '', last_pair.bytecode[-2:])
+            package.code_pairs[-1] = last_pair._replace(bytecode=last_pair.bytecode[:-2])
+            package.code_pairs.append(dummy_pair)
 
 
 class CodePackage:
