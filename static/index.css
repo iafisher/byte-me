@@ -51,3 +51,7 @@ td {
 #tabs > li {
   font-family: monospace, sans-serif;
 }
+
+.hiddenRow {
+    padding: 0 !important;
+}

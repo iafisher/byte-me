@@ -80,23 +80,25 @@ function makeRowGroup(code) {
 
 // Make a single row in the table
 function makeTableRow(source, lineno, bytecode, firstRow) {
+  var divHide = '<div class="accordian-body collapse ' + lineno + '">';
   if (firstRow) {
     var lineCell = '<td class="lineno-cell">' + lineno + '</td>';
     var sourceCell = '<td class="source-cell">' + source + '</td>';
-  } else {
-    // just delete the additions later for now keep parallel
-    var lineCell = '<td class="lineno-cell">' + '' + '</td>';
-    var sourceCell = '<td class="source-cell">' + '' + '</td>';
-  }
     var opnameCell = '<td class="opname-cell">' + bytecode.opname + '</td>';
     var descCell = '<td class="description-cell">' + getDescription(bytecode) + '</td>';
+  } else {
+    // just delete the additions later for now keep parallel
+    var lineCell = '<td class="lineno-cell hiddenRow">' + divHide + '' + '</div>' + '</td>';
+    var sourceCell = '<td class="source-cell hiddenRow">' + divHide + '' + '</div>' + '</td>';
+    var opnameCell = '<td class="opname-cell hiddenRow">' + divHide + bytecode.opname + '</div>' + '</td>';
+    var descCell = '<td class="description-cell hiddenRow">' + divHide + getDescription(bytecode) + '</div>' + '</td>';
+  }
     if (firstRow) {
       rowInfo = '<tr data-toggle="collapse" data-target=.' + lineno + '>'
       return rowInfo + lineCell + sourceCell + opnameCell + descCell + '</tr>';
     } else {
-      //divHide = '<div class="accordian-body collapse ' + lineno + '">';
-      return '<tr class = "' + lineno + ' aria-expanded = false collapse">' +
-             lineCell + sourceCell + opnameCell + descCell + '</tr>';
+      return '<tr class = "' +  lineno + '">' +
+            lineCell + '</div>' + sourceCell + opnameCell + descCell + '</tr>';
     }
 }
 
