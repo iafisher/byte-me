@@ -52,6 +52,6 @@ td {
   font-family: monospace, sans-serif;
 }
 
-.hiddenRow {
-    padding: 0 !important;
+.non-header-row {
+  display: none;
 }

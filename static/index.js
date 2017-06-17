@@ -6,6 +6,7 @@ var editor = CodeMirror.fromTextArea(myTextArea, {
     indentUnit: 4,
 });
 
+
 $("#compile").click(function() {
     $.ajax({
         url: "/bytecode",
@@ -43,6 +44,7 @@ function makeEverything(data) {
         // this only matters on the first compile, when the tabs bar is initially hidden
         $("#tabs").show();
         setupActiveTabs();
+        setupCollapsibleRows();
     } else {
         $("#syntaxError").text(data);
     }
@@ -73,32 +75,23 @@ function makeRowGroup(code) {
     // only the first row in a row group contains the line number and source code
     var firstRow = makeTableRow(code.source, code.lineno, code.bytecode[0], true);
     var otherRows = code.bytecode.slice(1).map(function (b) {
-        return makeTableRow('', code.lineno, b, false);
+        return makeTableRow('', '', b, false);
     });
     return firstRow + otherRows.join("");
 }
 
 // Make a single row in the table
 function makeTableRow(source, lineno, bytecode, firstRow) {
-  var divHide = '<div class="accordian-body collapse ' + lineno + '">';
-  if (firstRow) {
     var lineCell = '<td class="lineno-cell">' + lineno + '</td>';
     var sourceCell = '<td class="source-cell">' + source + '</td>';
     var opnameCell = '<td class="opname-cell">' + bytecode.opname + '</td>';
     var descCell = '<td class="description-cell">' + getDescription(bytecode) + '</td>';
-  } else {
-    // just delete the additions later for now keep parallel
-    var lineCell = '<td class="lineno-cell hiddenRow">' + divHide + '' + '</div>' + '</td>';
-    var sourceCell = '<td class="source-cell hiddenRow">' + divHide + '' + '</div>' + '</td>';
-    var opnameCell = '<td class="opname-cell hiddenRow">' + divHide + bytecode.opname + '</div>' + '</td>';
-    var descCell = '<td class="description-cell hiddenRow">' + divHide + getDescription(bytecode) + '</div>' + '</td>';
-  }
+    var body = lineCell + sourceCell + opnameCell + descCell;
     if (firstRow) {
-      rowInfo = '<tr data-toggle="collapse" data-target=.' + lineno + '>'
-      return rowInfo + lineCell + sourceCell + opnameCell + descCell + '</tr>';
+        var glyph = '<td><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>';
+        return '<tr class="header-row">' + body + glyph + '</tr>';
     } else {
-      return '<tr class = "' +  lineno + '">' +
-            lineCell + '</div>' + sourceCell + opnameCell + descCell + '</tr>';
+        return '<tr class="non-header-row">' + body + '</tr>';
     }
 }
 
@@ -127,4 +120,12 @@ function setupActiveTabs() {
     }
     $("#tabs li:nth-child(" + activeTab + ")").addClass("active");
     $("#tabContent div:nth-child(" + activeTab + ")").addClass("active");
+}
+
+
+function setupCollapsibleRows() {
+    $(".header-row").click(function() {
+        $(this).toggleClass('expand').nextUntil("tr.header-row").slideToggle(0);
+        $(".glyphicon", this).toggleClass("glyphicon-plus glyphicon-minus");
+    });
 }
