@@ -59,6 +59,7 @@ function makeTabHeader(name, i) {
 function makeTabPanel(pack, i) {
     var thead = '<thead><tr>' +
                    '<th>Line</th><th>Source Code</th><th>Opname</th><th>Description</th>' +
+                   '<th><span class="glyphicon glyphicon-menu-up row-fold"></span></th>' +
                 '</tr></thead>';
     var tbody = '<tbody>' + makeTableBody(pack) + '</tbody>';
     var table = '<table class="table table-hover bytecode-table">' + thead + tbody + '</table>';
@@ -88,7 +89,7 @@ function makeTableRow(source, lineno, bytecode, firstRow) {
     var descCell = '<td class="description-cell">' + getDescription(bytecode) + '</td>';
     var body = lineCell + sourceCell + opnameCell + descCell;
     if (firstRow) {
-        var glyph = '<td><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></td>';
+        var glyph = '<td><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></td>';
         return '<tr class="header-row">' + body + glyph + '</tr>';
     } else {
         return '<tr class="non-header-row">' + body + '</tr>';
@@ -124,8 +125,16 @@ function setupActiveTabs() {
 
 
 function setupCollapsibleRows() {
+    // folding on individual rows
     $(".header-row").click(function() {
-        $(this).toggleClass('expand').nextUntil("tr.header-row").slideToggle(0);
+        $(this).nextUntil("tr.header-row").slideToggle(0);
         $(".glyphicon", this).toggleClass("glyphicon-menu-down glyphicon-menu-up");
+    });
+    // folding on all rows (the menu-up icon in the table head)
+    $("th span.row-fold").click(function() {
+        $(this).toggleClass('glyphicon-menu-down glyphicon-menu-up');
+        var table = $(this).parents("table");
+        $("tr.header-row", table).nextUntil("tr.header-row").slideToggle(0);
+        $("tr.header-row .glyphicon", table).toggleClass("glyphicon-menu-down glyphicon-menu-up");
     });
 }

@@ -55,7 +55,3 @@ td {
 #tabs > li {
   font-family: monospace, sans-serif;
 }
-
-.non-header-row {
-  display: none;
-}
