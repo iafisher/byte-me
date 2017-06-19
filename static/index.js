@@ -124,17 +124,25 @@ function setupActiveTabs() {
 }
 
 
+var upGlyph = "glyphicon-menu-up";
+var downGlyph = "glyphicon-menu-down";
 function setupCollapsibleRows() {
     // folding on individual rows
     $(".header-row").click(function() {
         $(this).nextUntil("tr.header-row").slideToggle(0);
-        $(".glyphicon", this).toggleClass("glyphicon-menu-down glyphicon-menu-up");
+        $(".glyphicon", this).toggleClass(upGlyph + " " + downGlyph);
     });
     // folding on all rows (the menu-up icon in the table head)
     $("th span.row-fold").click(function() {
-        $(this).toggleClass('glyphicon-menu-down glyphicon-menu-up');
         var table = $(this).parents("table");
-        $("tr.header-row", table).nextUntil("tr.header-row").slideToggle(0);
-        $("tr.header-row .glyphicon", table).toggleClass("glyphicon-menu-down glyphicon-menu-up");
+        if ($(this).hasClass(downGlyph)) {
+            $(this).removeClass(downGlyph).addClass(upGlyph);
+            $("tr.header-row .glyphicon", table).removeClass(downGlyph).addClass(upGlyph);
+            $("tr.header-row", table).nextUntil("tr.header-row").slideDown(0);
+        } else {
+            $(this).toggleClass(upGlyph + " " + downGlyph);
+            $("tr.header-row .glyphicon", table).removeClass(upGlyph).addClass(downGlyph);
+            $("tr.header-row", table).nextUntil("tr.header-row").slideUp(0);
+        }
     });
 }
