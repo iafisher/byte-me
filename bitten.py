@@ -1,6 +1,7 @@
 import dis
 from collections import namedtuple
 
+
 def package_module(source):
     """Return a list of CodePackage objects for each function in the source code, as well as a
        package for the module as a whole.
@@ -12,6 +13,7 @@ def package_module(source):
     functions = [CodePackage(n, source_lines, dis.Bytecode(f))
                     for n, f in extract_functions(module_bytecode.codeobj)]
     return [module_package] + functions
+
 
 def fix_final_return(package):
     """Move the final return instructions (which are appended to every module) to their own line
@@ -34,7 +36,7 @@ def fix_final_return(package):
 
 class CodePackage:
     """Source code paired with bytecode instructions."""
-    
+
     def __init__(self, name, source_lines, bytecode):
         self.name = name
         self.code_pairs = [CodePair(n, source_lines[n-1], g) for n, g in group_bytecode(bytecode)]
@@ -68,6 +70,7 @@ def group_bytecode(bytecode):
             collect.append(instruction)
         if collect:
             yield (last_line, tuple(collect))
+
 
 def extract_functions(codeobj, prefix=''):
     """Yield (name, code_obj) pairs for all functions, classes, list comprehensions etc. defined
