@@ -1,1 +1,1 @@
-web: gunicorn webinter:app
+web: npm install static/CodeMirror && gunicorn webinter:app
