@@ -4,9 +4,6 @@
 [submodule "static/-f"]
 	path = static/-f
 	url = https://github.com/twbs/bootstrap
-[submodule "static/bootstrap"]
-	path = static/bootstrap
-	url = https://github.com/twbs/bootstrap
 [submodule "static/CodeMirror"]
 	path = static/CodeMirror
 	url = https://github.com/codemirror/CodeMirror
