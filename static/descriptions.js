@@ -78,12 +78,13 @@ var descDict = {
     IMPORT_NAME: "Pop {{TOS}} and {{TOS1}} as arguments to {{__import__}}, and push {{ARGREPR}} onto the stack",
     IMPORT_FROM: "Push {{ARGREPR}} onto the stack from the module in {{TOS}}",
     JUMP_FORWARD: "Skip {{ARGREPR}} instructions",
-    POP_JUMP_IF_TRUE: "Pop {{TOS}}; if it is {{True}}, jump to {{ARGREPR}}",
-    POP_JUMP_IF_FALSE: "Pop {{TOS}}; if it is {{False}}, jump to {{ARGREPR}}",
-    JUMP_IF_TRUE_OR_POP: "If {{TOS}} is {{True}}, jump to {{ARGREPR}}; otherwise, pop {{TOS}}",
-    JUMP_IF_FALSE_OR_POP: "If {{TOS}} is {{False}}, jump to {{ARGREPR}}; otherwise, pop {{TOS}}",
-    JUMP_ABSOLUTE: "Jump to {{ARGREPR}}",
-    FOR_ITER: "Call {{__next__}} on {{TOS}} (assuming it to be an iterator); if a new value is yielded, push it onto the stack; otherwise, pop {{TOS}} and skip {{ARGREPR}} instructions",
+    POP_JUMP_IF_TRUE: "Pop {{TOS}}; if it is {{True}}, jump to offset {{ARG}}",
+    POP_JUMP_IF_FALSE: "Pop {{TOS}}; if it is {{False}}, jump to offset {{ARG}}",
+    JUMP_IF_TRUE_OR_POP: "If {{TOS}} is {{True}}, jump to offset {{ARG}}; otherwise, pop {{TOS}}",
+    JUMP_IF_FALSE_OR_POP: "If {{TOS}} is {{False}}, jump to offset {{ARG}}; otherwise, pop {{TOS}}",
+    JUMP_ABSOLUTE: "Jump to offset {{ARG}}",
+    // This instruction has to be handled in a special way by getDescription
+    FOR_ITER: "Call {{__next__}} on {{TOS}} (assuming it to be an iterator); if a new value is yielded, push it onto the stack; otherwise, pop {{TOS}} and jump to offset {{ARG}}",
     LOAD_GLOBAL: "Load the global name {{ARGREPR}} onto the stack",
     // still more to do here
 }
@@ -98,7 +99,12 @@ for (var key in descDict) {
 function getDescription(bytecode) {
     var ret = descDict[bytecode.opname];
     if (ret) {
-        return ret.replace(/ARGREPR/g, bytecode.argrepr);
+        if (bytecode.opname !== "FOR_ITER") {
+            return ret.replace(/ARGREPR/g, bytecode.argrepr).replace(/ARG/g, bytecode.arg);
+        } else {
+            var arg = '' + (Number(bytecode.arg) + Number(bytecode.offset) + 4);
+            return ret.replace(/ARGREPR/g, bytecode.argrepr).replace(/ARG/g, arg);
+        }
     } else {
         return "";
     }

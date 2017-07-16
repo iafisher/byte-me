@@ -64,8 +64,11 @@ def json_comply_code_pairs(code_pairs):
 def json_comply_bytecode(bytecode_list):
     ret = []
     for inst in bytecode_list:
+        dct = {'opname': inst.opname, 'offset': inst.offset}
         if inst.arg is not None:
-            ret.append({'opname': inst.opname, 'arg': str(inst.arg), 'argrepr': inst.argrepr})
+            dct['arg'] = str(inst.arg)
+            dct['argrepr'] = inst.argrepr
         else:
-            ret.append({'opname': inst.opname, 'arg': '', 'argrepr': ''})
+            dct['arg'] = dct['argrepr'] = ''
+        ret.append(dct)
     return ret

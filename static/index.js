@@ -58,7 +58,11 @@ function makeTabHeader(name, i) {
 // Make a tab panel from a code package
 function makeTabPanel(pack, i) {
     var thead = '<thead><tr>' +
-                   '<th>Line</th><th>Source Code</th><th>Opname</th><th>Description</th>' +
+                   '<th>Line</th>' +
+                   '<th>Source Code</th>' +
+                   '<th>Offset</th>' +
+                   '<th>Opname</th>' +
+                   '<th>Description</th>' + 
                    '<th><span class="glyphicon glyphicon-menu-up row-fold"></span></th>' +
                 '</tr></thead>';
     var tbody = '<tbody>' + makeTableBody(pack) + '</tbody>';
@@ -85,9 +89,10 @@ function makeRowGroup(code) {
 function makeTableRow(source, lineno, bytecode, firstRow) {
     var lineCell = '<td class="lineno-cell">' + lineno + '</td>';
     var sourceCell = '<td class="source-cell">' + source + '</td>';
+    var offsetCell = '<td class="offset-cell">' + bytecode.offset + '</td>';
     var opnameCell = '<td class="opname-cell">' + bytecode.opname + '</td>';
     var descCell = '<td class="description-cell">' + getDescription(bytecode) + '</td>';
-    var body = lineCell + sourceCell + opnameCell + descCell;
+    var body = lineCell + sourceCell + offsetCell + opnameCell + descCell;
     if (firstRow) {
         var glyph = '<td><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></td>';
         return '<tr class="header-row">' + body + glyph + '</tr>';
